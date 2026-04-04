@@ -1,11 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  src: string
-  alt: string
-  celebrate?: boolean
-}>()
-
-
+defineProps<{
+  src: string;
+  alt: string;
+  celebrate?: boolean;
+}>();
 </script>
 
 <template>
@@ -16,13 +14,13 @@ const props = defineProps<{
     <div
       class="overflow-hidden rounded-3xl bg-white shadow-lg shadow-neutral-900/10 ring-1 ring-black/5 transition duration-300 ease-out dark:bg-neutral-900 dark:ring-white/10 dark:shadow-black/40"
     >
-      <div class=" w-full overflow-hidden">
+      <div class="w-full overflow-hidden">
         <img
-         :src="src"
-         :alt="alt"
-         class="h-full w-full object-cover transition-transform duration-300 ease-out"
-         loading="eager"
-        >
+          :src="src"
+          :alt="alt"
+          class="h-full w-full object-cover transition-transform duration-300 ease-out"
+          loading="eager"
+        />
       </div>
     </div>
   </div>

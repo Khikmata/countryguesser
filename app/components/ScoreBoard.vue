@@ -1,66 +1,57 @@
 <script setup lang="ts">
 defineProps<{
-  streak: number
-  bestStreak: number
-  score: number
-  /** Remaining flags in the current deck (no repeats until the set is done). */
-  flagsLeft?: number
-}>()
+  streak: number;
+  bestStreak: number;
+  score: number;
+}>();
 
 defineEmits<{
-  leaderboards: []
-}>()
+  leaderboards: [];
+}>();
 </script>
 
 <template>
-  <div
-    class="fixed bottom-0 left-0 right-0 z-30 "
-  >
-  <div class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3">
-    <p
-      v-if="flagsLeft !== undefined"
-      class="text-center text-[11px] font-bold uppercase tracking-wide text-neutral-500 dark:text-neutral-400"
+  <div class="fixed bottom-0 left-0 right-0 z-30">
+    <div
+      class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3"
     >
-      <span class="tabular-nums text-neutral-800 dark:text-neutral-200">{{ flagsLeft }}</span>
-      flag(s) left
-    </p>
-    <button
-      type="button"
-      class="hidden items-center justify-center rounded-full border border-violet-300/70 bg-violet-100/95 px-4 py-2 text-xs font-bold uppercase tracking-wide text-violet-900 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
-      @click="$emit('leaderboards')"
-    >
-      Go to leaderboards
-    </button>
+      <button
+        type="button"
+        class="hidden items-center justify-center rounded-full border border-violet-300/70 bg-violet-100/95 px-4 py-2 text-xs font-bold uppercase tracking-wide text-violet-900 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
+        @click="$emit('leaderboards')"
+      >
+        Go to leaderboards
+      </button>
     </div>
     <div class="pointer-events-none flex justify-center px-4 pb-safe pt-3">
-    <div
-      class="pointer-events-auto flex max-w-lg flex-wrap items-center justify-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-neutral-900/90"
-    >
       <div
-        class="flex items-center gap-2 rounded-full bg-amber-400/20 px-4 py-2 text-sm font-semibold text-amber-900 dark:bg-amber-400/15 dark:text-amber-100"
+        class="pointer-events-auto flex max-w-lg flex-wrap items-center justify-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-neutral-900/90"
       >
-        <span class="opacity-70">Streak</span>
-        <Transition mode="out-in" name="pop-num">
-          <span :key="streak" class="tabular-nums">{{ streak }}</span>
-        </Transition>
-      </div>
-      <div
-        class="flex items-center gap-2 rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-900 dark:text-violet-100"
-      >
-        <span class="opacity-70">Best</span>
-        <span class="tabular-nums">{{ bestStreak }}</span>
-      </div>
-      <div
-        class="flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-100"
-      >
-        <span class="opacity-70">Score</span>
-        <Transition mode="out-in" name="pop-num">
-          <span :key="score" class="tabular-nums">{{ score }}</span>
-        </Transition>
+        <div
+          class="flex items-center gap-2 rounded-full bg-amber-400/20 px-4 py-2 text-sm font-semibold text-amber-900 dark:bg-amber-400/15 dark:text-amber-100"
+        >
+          <span class="opacity-70">Streak</span>
+          <Transition mode="out-in" name="pop-num">
+            <span :key="streak" class="tabular-nums">{{ streak }}</span>
+          </Transition>
+        </div>
+        <div
+          class="flex items-center gap-2 rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-900 dark:text-violet-100"
+        >
+          <span class="opacity-70">Best</span>
+          <span class="tabular-nums">{{ bestStreak }}</span>
+        </div>
+        <div
+          class="flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-100"
+        >
+          <span class="opacity-70">Score</span>
+          <Transition mode="out-in" name="pop-num">
+            <span :key="score" class="tabular-nums">{{ score }}</span>
+          </Transition>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>

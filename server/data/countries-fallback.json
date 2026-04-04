@@ -6,10 +6,10 @@
     "cca2": "CA"
   },
   {
-      "name": { "common": "United States" },
-      "capital": ["Washington, D.C."],
-      "flags": { "png": "https://flagcdn.com/w320/us.png" },
-      "cca2": "US"
+    "name": { "common": "United States" },
+    "capital": ["Washington, D.C."],
+    "flags": { "png": "https://flagcdn.com/w320/us.png" },
+    "cca2": "US"
   },
   {
     "name": { "common": "Mexico" },

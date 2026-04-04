@@ -1,30 +1,38 @@
 <script setup lang="ts">
-import type { Country } from '~/types/quiz';
+import type { Country } from "~/types/quiz";
 
 defineProps<{
-  countryName: string
-  countries: Country[]
-  disabled?: boolean
-  shake?: boolean
-  capitalHintDisplay?: string
-  capitalHintDisabled?: boolean
-  capitalHintLabel?: string
-}>()
+  countryName: string;
+  countries: Country[];
+  disabled?: boolean;
+  shake?: boolean;
+  capitalHintDisplay?: string;
+  capitalHintDisabled?: boolean;
+  capitalHintLabel?: string;
+}>();
 
 defineEmits<{
-  submit: []
-  hint: []
-}>()
+  submit: [];
+  hint: [];
+}>();
 
-const model = defineModel<string>({ default: '' })
+const model = defineModel<string>({ default: "" });
 </script>
 
 <template>
   <div class="w-full max-w-md overflow-visible">
-    <p class="text-center text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
-      Bonus: what’s the capital of <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{ countryName }}</span>?
+    <p
+      class="text-center text-base leading-relaxed text-neutral-600 dark:text-neutral-300"
+    >
+      Bonus: what’s the capital of
+      <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{
+        countryName
+      }}</span
+      >?
     </p>
-    <p class="text-center text-neutral-500 dark:text-neutral-400">(optional — extra points if you get it.)</p>
+    <p class="text-center text-neutral-500 dark:text-neutral-400">
+      (optional — extra points if you get it.)
+    </p>
     <div class="mt-4 flex w-full flex-col items-center gap-3">
       <UFieldGroup size="xl" class="w-full gap-4">
         <AutocompleteInput
@@ -40,12 +48,10 @@ const model = defineModel<string>({ default: '' })
           @submit="$emit('submit')"
         />
         <UButton
-        color="neutral"
-                    size="xl"
-
-                    variant="subtle"
-
-                    icon="material-symbols:lightbulb"
+          color="neutral"
+          size="xl"
+          variant="subtle"
+          icon="material-symbols:lightbulb"
           class="shrink-0 disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="capitalHintDisabled"
           :aria-label="capitalHintLabel"

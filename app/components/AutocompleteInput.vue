@@ -1,144 +1,148 @@
 <script setup lang="ts">
-import { useDebounceFn } from '@vueuse/core';
-import Fuse from 'fuse.js';
-import type { Country } from '~/types/quiz';
-import { segmentsSimple } from '~/utils/text';
+import { useDebounceFn } from "@vueuse/core";
+import Fuse from "fuse.js";
+import type { Country } from "~/types/quiz";
+import { segmentsSimple } from "~/utils/text";
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string
-    countries: Country[]
-    field?: 'name' | 'capital'
-    disabled?: boolean
-    success?: boolean
-    shake?: boolean
+    modelValue: string;
+    countries: Country[];
+    field?: "name" | "capital";
+    disabled?: boolean;
+    success?: boolean;
+    shake?: boolean;
     /** Max horizontal shake distance (px) when shake is true */
-    shakeAmplitudePx?: number
-    shakeDurationMs?: number
-    placeholder?: string
-    ariaLabel?: string
+    shakeAmplitudePx?: number;
+    shakeDurationMs?: number;
+    placeholder?: string;
+    ariaLabel?: string;
   }>(),
   {
-    field: 'name',
-    placeholder: 'Type a country…',
-    ariaLabel: 'Search',
+    field: "name",
+    placeholder: "Type a country…",
+    ariaLabel: "Search",
     shakeAmplitudePx: 6,
-    shakeDurationMs: 550
-  }
-)
+    shakeDurationMs: 550,
+  },
+);
 
 const emit = defineEmits<{
-  'update:modelValue': [v: string]
-  submit: []
-}>()
+  "update:modelValue": [v: string];
+  submit: [];
+}>();
 
-const query = ref('')
-const debouncedQ = ref('')
-const open = ref(false)
-const activeIdx = ref(-1)
-const pickedCommit = ref<string | null>(null)
-const rootId = useId()
-const listId = `${rootId}-list`
-const rootRef = ref<HTMLElement | null>(null)
+const query = ref("");
+const debouncedQ = ref("");
+const open = ref(false);
+const activeIdx = ref(-1);
+const inputRef = ref<HTMLInputElement | null>(null);
+const pickedCommit = ref<string | null>(null);
+const rootId = useId();
+const listId = `${rootId}-list`;
 
 const fuseItems = computed(() => {
-  if (props.field === 'name') {
-    return props.countries.map((c) => ({ label: c.name, key: c.id }))
+  if (props.field === "name") {
+    return props.countries.map((c) => ({ label: c.name, key: c.id }));
   }
-  const caps = new Set<string>()
-  for (const c of props.countries) caps.add(c.capital)
-  return [...caps].sort().map((cap) => ({ label: cap, key: cap }))
-})
+  const caps = new Set<string>();
+  for (const c of props.countries) caps.add(c.capital);
+  return [...caps].sort().map((cap) => ({ label: cap, key: cap }));
+});
 
 const fuse = computed(
   () =>
     new Fuse(fuseItems.value, {
-      keys: ['label'],
+      keys: ["label"],
       threshold: 0.36,
       ignoreLocation: true,
-      minMatchCharLength: 1
-    })
-)
+      minMatchCharLength: 1,
+    }),
+);
 
 const topFive = computed(() => {
-  const q = debouncedQ.value.trim()
-  if (!q) return []
-  return fuse.value.search(q).slice(0, 5).map((r) => r.item)
-})
+  const q = debouncedQ.value.trim();
+  if (!q) return [];
+  return fuse.value
+    .search(q)
+    .slice(0, 5)
+    .map((r) => r.item);
+});
 
 const runDebounced = useDebounceFn((q: string) => {
-  debouncedQ.value = q
-  activeIdx.value = -1
-}, 160)
+  debouncedQ.value = q;
+  activeIdx.value = -1;
+}, 160);
 
 watch(
   () => props.modelValue,
   (v) => {
-    if (v !== query.value) query.value = v
+    if (v !== query.value) query.value = v;
   },
-  { immediate: true }
-)
+  { immediate: true },
+);
 
 watch(query, (q) => {
   if (pickedCommit.value !== null && q.trim() !== pickedCommit.value) {
-    pickedCommit.value = null
+    pickedCommit.value = null;
   }
-  emit('update:modelValue', q)
-  runDebounced(q)
-})
+  emit("update:modelValue", q);
+  runDebounced(q);
+});
 
 watch([debouncedQ, topFive, () => props.disabled, pickedCommit], () => {
   open.value =
     !!debouncedQ.value.trim() &&
     topFive.value.length > 0 &&
     !props.disabled &&
-    pickedCommit.value === null
-})
+    pickedCommit.value === null;
+});
 
 watch(topFive, () => {
-  if (activeIdx.value >= topFive.value.length) activeIdx.value = topFive.value.length - 1
-})
+  if (activeIdx.value >= topFive.value.length)
+    activeIdx.value = topFive.value.length - 1;
+});
 
 function segments(label: string) {
-  return segmentsSimple(label, debouncedQ.value)
+  return segmentsSimple(label, debouncedQ.value);
 }
 
 function choose(label: string) {
-  const t = label.trim()
-  pickedCommit.value = t
-  query.value = label
-  emit('update:modelValue', label)
-  activeIdx.value = -1
-  open.value = false
+  const t = label.trim();
+  pickedCommit.value = t;
+  query.value = label;
+  emit("update:modelValue", label);
+  activeIdx.value = -1;
+  open.value = false;
 }
 
 function move(delta: number) {
-  const n = topFive.value.length
-  if (!n) return
-  if (activeIdx.value < 0) activeIdx.value = delta > 0 ? 0 : n - 1
-  else activeIdx.value = (activeIdx.value + delta + n) % n
+  const n = topFive.value.length;
+  if (!n) return;
+  if (activeIdx.value < 0) activeIdx.value = delta > 0 ? 0 : n - 1;
+  else activeIdx.value = (activeIdx.value + delta + n) % n;
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (props.disabled) return
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    if (!debouncedQ.value.trim()) return
-    open.value = true
-    move(1)
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    open.value = true
-    move(-1)
-  } else if (e.key === 'Enter') {
-    e.preventDefault()
+  if (props.disabled) return;
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    if (!debouncedQ.value.trim()) return;
+    open.value = true;
+    move(1);
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    open.value = true;
+    move(-1);
+  } else if (e.key === "Enter") {
+    e.preventDefault();
     if (open.value && activeIdx.value >= 0) {
-      const it = topFive.value[activeIdx.value]
-      if (it) choose(it.label)
+      const it = topFive.value[activeIdx.value];
+      if (it) choose(it.label);
     }
-    emit('submit')
-  } else if (e.key === 'Escape') {
-    open.value = false
+    emit("submit");
+  } else if (e.key === "Escape") {
+    open.value = false;
   }
 }
 
@@ -149,18 +153,18 @@ function onFocus() {
     debouncedQ.value.trim() &&
     topFive.value.length
   ) {
-    open.value = true
+    open.value = true;
   }
 }
 
+onMounted(() => {
+  if (!props.disabled) {
+    inputRef.value?.focus?.();
+  }
+});
+
 function onBlur() {
-  open.value = false
-  window.setTimeout(() => {
-    const a = document.activeElement
-    if (!rootRef.value?.contains(a)) {
-      pickedCommit.value = null
-    }
-  }, 0)
+  open.value = false;
 }
 </script>
 
@@ -171,28 +175,33 @@ function onBlur() {
     :class="shake ? 'animate-shake' : ''"
     :style="
       shake
-        ? ({ '--shake-x': `${props.shakeAmplitudePx}px` } as Record<string, string>)
+        ? ({ '--shake-x': `${props.shakeAmplitudePx}px` } as Record<
+            string,
+            string
+          >)
         : undefined
     "
   >
     <UInput
+      ref="inputRef"
       v-model="query"
       size="xl"
-
       variant="outline"
       class="w-full text-center text-lg font-medium transition-all duration-300 md:text-xl"
       :class="[
         success
           ? 'ring-4 ring-emerald-400/80 !shadow-[0_0_28px_rgba(52,211,153,0.45)] dark:ring-emerald-400/70'
           : 'ring-1 ring-black/8 dark:ring-white/15',
-        disabled ? 'pointer-events-none opacity-80' : ''
+        disabled ? 'pointer-events-none opacity-80' : '',
       ]"
       :placeholder="placeholder"
       :disabled="disabled"
       :aria-label="ariaLabel"
       :aria-expanded="open"
       :aria-controls="listId"
-      :aria-activedescendant="activeIdx >= 0 ? `${listId}-opt-${activeIdx}` : undefined"
+      :aria-activedescendant="
+        activeIdx >= 0 ? `${listId}-opt-${activeIdx}` : undefined
+      "
       role="combobox"
       autocomplete="off"
       @keydown="onKeydown"
@@ -231,7 +240,8 @@ function onBlur() {
             <mark
               v-if="seg.highlight"
               class="rounded bg-amber-200/90 px-0.2 text-inherit dark:bg-amber-400/30"
-            >{{ seg.text }}</mark>
+              >{{ seg.text }}</mark
+            >
             <span v-else>{{ seg.text }}</span>
           </span>
         </li>

@@ -2,7 +2,6 @@
 @import "@nuxt/ui";
 
 @layer base {
-
   * {
     margin: 0;
     border: 0;
@@ -11,10 +10,10 @@
   }
   html {
     font-family:
-      'Inter',
+      "Inter",
       system-ui,
       -apple-system,
-      'Segoe UI',
+      "Segoe UI",
       sans-serif;
   }
 
