@@ -29,7 +29,7 @@ const emit = defineEmits<{
               id="complete-title"
               class="text-center text-sm font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400"
             >
-              Full deck
+              Completed
             </p>
             <h2
               class="mt-2 text-center text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white"
@@ -65,7 +65,7 @@ const emit = defineEmits<{
               id="complete-title"
               class="text-center text-sm font-semibold uppercase tracking-widest text-violet-600 dark:text-violet-400"
             >
-              Full deck — Marathon
+              Full set — Marathon
             </p>
             <h2
               class="mt-2 text-center text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white"

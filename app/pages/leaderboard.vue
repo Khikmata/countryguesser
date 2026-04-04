@@ -35,7 +35,7 @@ const modeTab = computed({
 
 <template>
   <div
-    class="min-h-dvh bg-gradient-to-b from-sky-50 via-white to-violet-50/80 text-neutral-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-violet-950/30 dark:text-white"
+    class="min-h-dvh bg-gradient-to-b from-sky-50 via-white to-rose-50/80 text-neutral-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-rose-950/30 dark:text-white"
   >
     <main class="mx-auto max-w-lg px-5 pb-24 pt-12 md:max-w-xl md:pt-16">
       <div class="flex flex-wrap items-center justify-between gap-4">
