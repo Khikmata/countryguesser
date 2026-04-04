@@ -11,7 +11,7 @@ const LS_BY_MODE: Record<GameModeId, string> = {
   marathon: "gf-leaderboard-marathon-v1",
 };
 
-const MAX_ENTRIES = 200;
+const MAX_ENTRIES = 20;
 
 function loadRaw(mode: GameModeId): LeaderboardEntry[] {
   if (!import.meta.client) return [];
