@@ -1,0 +1,248 @@
+[
+  {
+    "name": { "common": "Canada" },
+    "capital": ["Ottawa"],
+    "flags": { "png": "https://flagcdn.com/w320/ca.png" },
+    "cca2": "CA"
+  },
+  {
+      "name": { "common": "United States" },
+      "capital": ["Washington, D.C."],
+      "flags": { "png": "https://flagcdn.com/w320/us.png" },
+      "cca2": "US"
+  },
+  {
+    "name": { "common": "Mexico" },
+    "capital": ["Mexico City"],
+    "flags": { "png": "https://flagcdn.com/w320/mx.png" },
+    "cca2": "MX"
+  },
+  {
+    "name": { "common": "Brazil" },
+    "capital": ["Brasília"],
+    "flags": { "png": "https://flagcdn.com/w320/br.png" },
+    "cca2": "BR"
+  },
+  {
+    "name": { "common": "Argentina" },
+    "capital": ["Buenos Aires"],
+    "flags": { "png": "https://flagcdn.com/w320/ar.png" },
+    "cca2": "AR"
+  },
+  {
+    "name": { "common": "United Kingdom" },
+    "capital": ["London"],
+    "flags": { "png": "https://flagcdn.com/w320/gb.png" },
+    "cca2": "GB"
+  },
+  {
+    "name": { "common": "France" },
+    "capital": ["Paris"],
+    "flags": { "png": "https://flagcdn.com/w320/fr.png" },
+    "cca2": "FR"
+  },
+  {
+    "name": { "common": "Germany" },
+    "capital": ["Berlin"],
+    "flags": { "png": "https://flagcdn.com/w320/de.png" },
+    "cca2": "DE"
+  },
+  {
+    "name": { "common": "Italy" },
+    "capital": ["Rome"],
+    "flags": { "png": "https://flagcdn.com/w320/it.png" },
+    "cca2": "IT"
+  },
+  {
+    "name": { "common": "Spain" },
+    "capital": ["Madrid"],
+    "flags": { "png": "https://flagcdn.com/w320/es.png" },
+    "cca2": "ES"
+  },
+  {
+    "name": { "common": "Poland" },
+    "capital": ["Warsaw"],
+    "flags": { "png": "https://flagcdn.com/w320/pl.png" },
+    "cca2": "PL"
+  },
+  {
+    "name": { "common": "Japan" },
+    "capital": ["Tokyo"],
+    "flags": { "png": "https://flagcdn.com/w320/jp.png" },
+    "cca2": "JP"
+  },
+  {
+    "name": { "common": "China" },
+    "capital": ["Beijing"],
+    "flags": { "png": "https://flagcdn.com/w320/cn.png" },
+    "cca2": "CN"
+  },
+  {
+    "name": { "common": "India" },
+    "capital": ["New Delhi"],
+    "flags": { "png": "https://flagcdn.com/w320/in.png" },
+    "cca2": "IN"
+  },
+  {
+    "name": { "common": "South Korea" },
+    "capital": ["Seoul"],
+    "flags": { "png": "https://flagcdn.com/w320/kr.png" },
+    "cca2": "KR"
+  },
+  {
+    "name": { "common": "Australia" },
+    "capital": ["Canberra"],
+    "flags": { "png": "https://flagcdn.com/w320/au.png" },
+    "cca2": "AU"
+  },
+  {
+    "name": { "common": "New Zealand" },
+    "capital": ["Wellington"],
+    "flags": { "png": "https://flagcdn.com/w320/nz.png" },
+    "cca2": "NZ"
+  },
+  {
+    "name": { "common": "South Africa" },
+    "capital": ["Pretoria"],
+    "flags": { "png": "https://flagcdn.com/w320/za.png" },
+    "cca2": "ZA"
+  },
+  {
+    "name": { "common": "Egypt" },
+    "capital": ["Cairo"],
+    "flags": { "png": "https://flagcdn.com/w320/eg.png" },
+    "cca2": "EG"
+  },
+  {
+    "name": { "common": "Nigeria" },
+    "capital": ["Abuja"],
+    "flags": { "png": "https://flagcdn.com/w320/ng.png" },
+    "cca2": "NG"
+  },
+  {
+    "name": { "common": "Kenya" },
+    "capital": ["Nairobi"],
+    "flags": { "png": "https://flagcdn.com/w320/ke.png" },
+    "cca2": "KE"
+  },
+  {
+    "name": { "common": "Norway" },
+    "capital": ["Oslo"],
+    "flags": { "png": "https://flagcdn.com/w320/no.png" },
+    "cca2": "NO"
+  },
+  {
+    "name": { "common": "Sweden" },
+    "capital": ["Stockholm"],
+    "flags": { "png": "https://flagcdn.com/w320/se.png" },
+    "cca2": "SE"
+  },
+  {
+    "name": { "common": "Finland" },
+    "capital": ["Helsinki"],
+    "flags": { "png": "https://flagcdn.com/w320/fi.png" },
+    "cca2": "FI"
+  },
+  {
+    "name": { "common": "Portugal" },
+    "capital": ["Lisbon"],
+    "flags": { "png": "https://flagcdn.com/w320/pt.png" },
+    "cca2": "PT"
+  },
+  {
+    "name": { "common": "Greece" },
+    "capital": ["Athens"],
+    "flags": { "png": "https://flagcdn.com/w320/gr.png" },
+    "cca2": "GR"
+  },
+  {
+    "name": { "common": "Turkey" },
+    "capital": ["Ankara"],
+    "flags": { "png": "https://flagcdn.com/w320/tr.png" },
+    "cca2": "TR"
+  },
+  {
+    "name": { "common": "Thailand" },
+    "capital": ["Bangkok"],
+    "flags": { "png": "https://flagcdn.com/w320/th.png" },
+    "cca2": "TH"
+  },
+  {
+    "name": { "common": "Vietnam" },
+    "capital": ["Hanoi"],
+    "flags": { "png": "https://flagcdn.com/w320/vn.png" },
+    "cca2": "VN"
+  },
+  {
+    "name": { "common": "Indonesia" },
+    "capital": ["Jakarta"],
+    "flags": { "png": "https://flagcdn.com/w320/id.png" },
+    "cca2": "ID"
+  },
+  {
+    "name": { "common": "Philippines" },
+    "capital": ["Manila"],
+    "flags": { "png": "https://flagcdn.com/w320/ph.png" },
+    "cca2": "PH"
+  },
+  {
+    "name": { "common": "Malaysia" },
+    "capital": ["Kuala Lumpur"],
+    "flags": { "png": "https://flagcdn.com/w320/my.png" },
+    "cca2": "MY"
+  },
+  {
+    "name": { "common": "Chile" },
+    "capital": ["Santiago"],
+    "flags": { "png": "https://flagcdn.com/w320/cl.png" },
+    "cca2": "CL"
+  },
+  {
+    "name": { "common": "Colombia" },
+    "capital": ["Bogotá"],
+    "flags": { "png": "https://flagcdn.com/w320/co.png" },
+    "cca2": "CO"
+  },
+  {
+    "name": { "common": "Peru" },
+    "capital": ["Lima"],
+    "flags": { "png": "https://flagcdn.com/w320/pe.png" },
+    "cca2": "PE"
+  },
+  {
+    "name": { "common": "Netherlands" },
+    "capital": ["Amsterdam"],
+    "flags": { "png": "https://flagcdn.com/w320/nl.png" },
+    "cca2": "NL"
+  },
+  {
+    "name": { "common": "Belgium" },
+    "capital": ["Brussels"],
+    "flags": { "png": "https://flagcdn.com/w320/be.png" },
+    "cca2": "BE"
+  },
+  {
+    "name": { "common": "Switzerland" },
+    "capital": ["Bern"],
+    "flags": { "png": "https://flagcdn.com/w320/ch.png" },
+    "cca2": "CH"
+  },
+  {
+    "name": { "common": "Austria" },
+    "capital": ["Vienna"],
+    "flags": { "png": "https://flagcdn.com/w320/at.png" },
+    "cca2": "AT"
+  },
+  {
+    "name": { "common": "Ireland" },
+    "capital": ["Dublin"],
+    "flags": { "png": "https://flagcdn.com/w320/ie.png" },
+    "cca2": "IE"
+  },
+  {
+    "name": { "common": "Czechia" },
+    "capital": ["Prague"],
+    "flags": { "png": "https://flagcdn.com/w320/cz.png" },
+    "cca2": "CZ"
+  }
+]
