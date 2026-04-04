@@ -9,8 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint . --fix",
-    "prettify": "npx prettier --write .",
-    "prepare": "npx husky install"
+    "prettify": "npx prettier --write ."
   },
   "dependencies": {
     "@nuxt/a11y": "^1.0.0-alpha.1",
@@ -28,6 +27,6 @@
     "vue-router": "^5.0.4"
   },
   "optionalDependencies": {
-    "husky": "^8.0.0"
+    "husky": "^8.0.3"
   }
 }
