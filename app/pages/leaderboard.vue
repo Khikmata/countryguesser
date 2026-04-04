@@ -18,9 +18,19 @@ const activeMode = computed<GameModeId>(() =>
 
 const rows = computed(() => getTop(activeMode.value, 100))
 
-function setMode(mode: GameModeId) {
-  router.replace({ path: '/leaderboard', query: { mode } })
-}
+const leaderboardTabItems = [
+  { label: 'One life', value: 'one-life' },
+  { label: 'Marathon', value: 'marathon' }
+]
+
+const modeTab = computed({
+  get: () => activeMode.value,
+  set: (v: string) => {
+    if (v === 'one-life' || v === 'marathon') {
+      router.replace({ path: '/leaderboard', query: { mode: v } })
+    }
+  }
+})
 </script>
 
 <template>
@@ -35,29 +45,16 @@ function setMode(mode: GameModeId) {
           </p>
           <h1 class="mt-1 text-3xl font-extrabold tracking-tight md:text-4xl">Leaderboard</h1>
         </div>
-        <UButton to="/" variant="soft" color="neutral" size="lg" class="font-semibold"> Play </UButton>
+        <UButton to="/" variant="soft" color="neutral" size="lg" class="font-semibold"> Go back to menu </UButton>
       </div>
 
-      <div class="mt-6 flex flex-wrap gap-2">
-        <UButton
-          size="sm"
-          :variant="activeMode === 'one-life' ? 'solid' : 'outline'"
-          color="violet"
-          class="font-semibold"
-          @click="setMode('one-life')"
-        >
-          One life
-        </UButton>
-        <UButton
-          size="sm"
-          :variant="activeMode === 'marathon' ? 'solid' : 'outline'"
-          color="violet"
-          class="font-semibold"
-          @click="setMode('marathon')"
-        >
-          Marathon
-        </UButton>
-      </div>
+      <UTabs
+        v-model="modeTab"
+        :items="leaderboardTabItems"
+        :content="false"
+ 
+        class="mt-6 w-full"
+      />
 
       <p class="mt-4 text-sm text-neutral-600 dark:text-neutral-400">
         <template v-if="activeMode === 'one-life'">

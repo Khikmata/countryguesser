@@ -1,9 +1,9 @@
-import type { GameModeId } from '~/types/game'
+import type { DeckCompleteSnapshot, GameModeId } from '~/types/game'
 import type { Country } from '~/types/quiz'
 import { maskCountryNameHint, normalizeAnswer } from '~/utils/text'
 import { useCountries } from './useCountries'
 
-export type GameState = 'guessing' | 'bonus' | 'wrong_pending' | 'failed'
+export type GameState = 'guessing' | 'bonus' | 'wrong_pending' | 'failed' | 'completed'
 
 const FAIL_OVERLAY_DELAY_MS = 800
 
@@ -29,6 +29,16 @@ const CHEERS = [
   'U r cracked'
 ]
 
+const DECK_COMPLETE_CHEERS = [
+  'You named every flag in the set — incredible focus.',
+  'Full deck cleared. That is serious geography brain.',
+  'All flags down. You should be proud of that run.',
+  'Complete sweep — not many players get here.',
+  'World tour finished. What a run!',
+  'Every country in the pool: done. Outstanding.',
+  'That was a marathon of the mind — and you finished it.'
+]
+
 /** 1.0 (slow) … 2.0 (instant), linear by elapsed time up to `fullSlowMs`. */
 function speedMultiplier(elapsedMs: number, fullSlowMs: number): number {
   const t = Math.min(fullSlowMs, Math.max(0, elapsedMs))
@@ -38,8 +48,6 @@ function speedMultiplier(elapsedMs: number, fullSlowMs: number): number {
 export function useGame() {
   const { countries, ready } = useCountries()
   const { recordScore, tryRecordMarathonBest } = useLeaderboard()
-
-  const recentIds = useState<string[]>('game-recent-ids', () => [])
 
   const currentCountry = shallowRef<Country | null>(null)
   const guess = ref('')
@@ -79,6 +87,15 @@ export function useGame() {
   const capitalSpeedBonusPts = ref<number | null>(null)
 
   const playSessionActive = useState<boolean>('gf-play-session-active', () => false)
+
+  /** Country ids already drawn this run — no repeats until the deck is finished or the session resets. */
+  const sessionUsedCountryIds = ref<string[]>([])
+  const deckBestStreak = ref(0)
+  const marathonCorrectFlags = ref(0)
+  const marathonWrongs = ref(0)
+  const marathonSkips = ref(0)
+  const marathonMissedLog = ref<{ name: string; kind: 'wrong' | 'skipped' }[]>([])
+  const deckCompleteSnapshot = ref<DeckCompleteSnapshot | null>(null)
 
   const failSnapshot = ref<{
     guessed: number
@@ -139,13 +156,28 @@ export function useGame() {
     microcopy.value = CHEERS[Math.floor(Math.random() * CHEERS.length)] ?? 'Nice!'
   }
 
+  function pickDeckCompleteEncouragement() {
+    return DECK_COMPLETE_CHEERS[Math.floor(Math.random() * DECK_COMPLETE_CHEERS.length)] ?? DECK_COMPLETE_CHEERS[0]!
+  }
+
+  function resetSessionDeck() {
+    sessionUsedCountryIds.value = []
+    deckBestStreak.value = 0
+    marathonCorrectFlags.value = 0
+    marathonWrongs.value = 0
+    marathonSkips.value = 0
+    marathonMissedLog.value = []
+    deckCompleteSnapshot.value = null
+  }
+
   function pickRandom(): Country | null {
     const list = countries.value
     if (!list.length) return null
-    const pool = list.filter((c) => !recentIds.value.includes(c.id))
-    const src = pool.length ? pool : list
-    const pick = src[Math.floor(Math.random() * src.length)]!
-    recentIds.value = [pick.id, ...recentIds.value.filter((x) => x !== pick.id)].slice(0, 30)
+    const used = new Set(sessionUsedCountryIds.value)
+    const pool = list.filter((c) => !used.has(c.id))
+    if (!pool.length) return null
+    const pick = pool[Math.floor(Math.random() * pool.length)]!
+    sessionUsedCountryIds.value = [...sessionUsedCountryIds.value, pick.id]
     return pick
   }
 
@@ -182,6 +214,7 @@ export function useGame() {
     resetHintsForNewRun()
     persist()
     currentCountry.value = null
+    resetSessionDeck()
   }
 
   function setGameMode(mode: GameModeId) {
@@ -205,6 +238,7 @@ export function useGame() {
     bonusAdvancing.value = false
     gameState.value = 'guessing'
     currentCountry.value = null
+    deckCompleteSnapshot.value = null
     return navigateTo('/')
   }
 
@@ -218,6 +252,7 @@ export function useGame() {
     bonusAdvancing.value = false
     gameState.value = 'guessing'
     currentCountry.value = null
+    deckCompleteSnapshot.value = null
     return navigateTo('/leaderboard')
   }
 
@@ -225,11 +260,60 @@ export function useGame() {
     () => gameState.value === 'guessing' && !marathonCooldown.value && !bonusAdvancing.value
   )
 
+  async function enterDeckCompleteState() {
+    if (gameState.value === 'completed') return
+    if (!countries.value.length) return
+
+    clearMarathonWrongTimer()
+    marathonCooldown.value = false
+    marathonWrongMessage.value = ''
+    currentCountry.value = null
+
+    if (gameMode.value === 'one-life') {
+      const finalScore = score.value
+      const { rank, total } = recordScore(finalScore, 'one-life')
+      deckCompleteSnapshot.value = {
+        mode: 'one-life',
+        score: finalScore,
+        rank,
+        total,
+        message: pickDeckCompleteEncouragement()
+      }
+      score.value = 0
+      persist()
+    } else {
+      const finalScore = score.value
+      tryRecordMarathonBest(finalScore)
+      const c = marathonCorrectFlags.value
+      const w = marathonWrongs.value
+      const s = marathonSkips.value
+      const denom = c + w + s
+      const accuracyPct = denom > 0 ? Math.round((1000 * c) / denom) / 10 : 100
+      deckCompleteSnapshot.value = {
+        mode: 'marathon',
+        score: finalScore,
+        accuracyPct,
+        bestStreakThisRun: deckBestStreak.value,
+        missed: [...marathonMissedLog.value]
+      }
+      score.value = 0
+      persist()
+    }
+
+    gameState.value = 'completed'
+    await fireConfetti()
+  }
+
   function startNewRound() {
     if (currentCountry.value) {
       grantHintEveryThreeRounds()
     }
-    currentCountry.value = pickRandom()
+    const next = pickRandom()
+    if (!next) {
+      void enterDeckCompleteState()
+      return
+    }
+    currentCountry.value = next
     guess.value = ''
     capitalGuess.value = ''
     gameState.value = 'guessing'
@@ -251,6 +335,10 @@ export function useGame() {
       failSnapshot.value = null
       gameState.value = 'guessing'
     }
+    if (gameMode.value === 'marathon' && currentCountry.value) {
+      marathonSkips.value += 1
+      marathonMissedLog.value.push({ name: currentCountry.value.name, kind: 'skipped' })
+    }
     streak.value = 0
     persist()
     startNewRound()
@@ -261,8 +349,15 @@ export function useGame() {
     failSnapshot.value = null
     flagsGuessedThisRun.value = 0
     resetHintsForNewRun()
+    resetSessionDeck()
     gameState.value = 'guessing'
     startNewRound()
+  }
+
+  function playAgainAfterComplete() {
+    const mode = gameMode.value
+    applyFullSessionReset(mode)
+    playSessionActive.value = true
   }
 
   function countryMatches(input: string): boolean {
@@ -366,6 +461,10 @@ export function useGame() {
     }
 
     flagsGuessedThisRun.value += 1
+    if (gameMode.value === 'marathon') {
+      marathonCorrectFlags.value += 1
+    }
+    deckBestStreak.value = Math.max(deckBestStreak.value, streak.value)
     if (flagsGuessedThisRun.value >= RUN_TARGET_FLAGS) {
       score.value += 50
       flagsGuessedThisRun.value = 0
@@ -406,6 +505,8 @@ export function useGame() {
       persist()
 
       if (gameMode.value === 'marathon') {
+        marathonWrongs.value += 1
+        marathonMissedLog.value.push({ name: c.name, kind: 'wrong' })
         flagsGuessedThisRun.value = 0
         marathonWrongMessage.value = `Not quite — it was ${c.name}.`
         marathonCooldown.value = true
@@ -506,11 +607,18 @@ export function useGame() {
 
   const primaryDisabled = computed(
     () =>
+      gameState.value === 'completed' ||
       marathonCooldown.value ||
       gameState.value === 'wrong_pending' ||
       (gameState.value === 'guessing' && !guess.value.trim()) ||
       bonusAdvancing.value
   )
+
+  const flagsLeftInDeck = computed(() => {
+    const n = countries.value.length
+    if (!n) return 0
+    return Math.max(0, n - sessionUsedCountryIds.value.length)
+  })
 
   function clearFailOverlayTimer() {
     if (failOverlayTimerId.value !== null) {
@@ -534,6 +642,7 @@ export function useGame() {
       ready.value &&
       !currentCountry.value &&
       gameState.value !== 'failed' &&
+      gameState.value !== 'completed' &&
       gameState.value !== 'wrong_pending' &&
       !marathonCooldown.value
     ) {
@@ -569,6 +678,7 @@ export function useGame() {
     submitFlag,
     skipRound,
     playAgainAfterFail,
+    playAgainAfterComplete,
     takeFlagHint,
     takeCapitalHint,
     hintsBank,
@@ -583,6 +693,8 @@ export function useGame() {
     primaryLabel,
     primaryDisabled,
     failSnapshot,
+    deckCompleteSnapshot,
+    flagsLeftInDeck,
     RUN_TARGET_FLAGS,
     flagsGuessedThisRun,
     gameMode,
@@ -590,6 +702,7 @@ export function useGame() {
     canChangeGameMode,
     marathonWrongMessage,
     marathonCooldown,
+    roundsFinished,
     startPlayFromMenu,
     exitToMenu,
     exitToLeaderboard

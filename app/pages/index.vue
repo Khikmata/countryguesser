@@ -37,7 +37,6 @@ function play(mode: GameModeId) {
     <main class="mx-auto flex min-h-dvh max-w-2xl flex-col justify-between px-5 pb-8 pt-12 md:px-8 md:pt-16">
       <div>
         <div class="flex flex-col gap-2 mb-12">
-
           <h1 class=" text-center text-4xl font-extrabold tracking-tight md:text-5xl">Countryguesser</h1>
           <p class="text-center text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
             World flags and more

@@ -3,6 +3,8 @@ defineProps<{
   streak: number
   bestStreak: number
   score: number
+  /** Remaining flags in the current deck (no repeats until the set is done). */
+  flagsLeft?: number
 }>()
 
 defineEmits<{
@@ -14,13 +16,20 @@ defineEmits<{
   <div
     class="fixed bottom-0 left-0 right-0 z-30 "
   >
-  <div class="flex justify-center px-4 pb-safe pt-3">
+  <div class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3">
+    <p
+      v-if="flagsLeft !== undefined"
+      class="text-center text-[11px] font-bold uppercase tracking-wide text-neutral-500 dark:text-neutral-400"
+    >
+      <span class="tabular-nums text-neutral-800 dark:text-neutral-200">{{ flagsLeft }}</span>
+      flag(s) left
+    </p>
     <button
       type="button"
-      class="rounded-full border border-violet-300/70 bg-violet-100/95 px-4 py-2 text-xs font-bold uppercase tracking-wide text-violet-900 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
+      class="hidden items-center justify-center rounded-full border border-violet-300/70 bg-violet-100/95 px-4 py-2 text-xs font-bold uppercase tracking-wide text-violet-900 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
       @click="$emit('leaderboards')"
     >
-      Leaderboards
+      Go to leaderboards
     </button>
     </div>
     <div class="pointer-events-none flex justify-center px-4 pb-safe pt-3">

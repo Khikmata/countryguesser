@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useFocusWithin, useMediaQuery } from '@vueuse/core'
+
 definePageMeta({
   layout: false,
   middleware: 'play-session'
@@ -14,6 +16,7 @@ const {
   ready,
   currentCountry,
   guess,
+  roundsFinished,
   capitalGuess,
   streak,
   bestStreak,
@@ -37,6 +40,7 @@ const {
   flagHintsDisabled,
   capitalHintsDisabled,
   hintDisplay,
+  hintsBank,
   capitalHintDisplay,
   flagHintButtonLabel,
   capitalHintButtonLabel,
@@ -44,6 +48,9 @@ const {
   primaryLabel,
   primaryDisabled,
   failSnapshot,
+  deckCompleteSnapshot,
+  flagsLeftInDeck,
+  playAgainAfterComplete,
   gameMode,
   marathonWrongMessage,
   marathonCooldown,
@@ -59,8 +66,14 @@ function openLeaderboardWarning() {
 
 function confirmLeaveForLeaderboard(close: () => void) {
   close()
-  void exitToLeaderboard()
+  exitToLeaderboard()
 }
+
+const quizFocusRoot = ref<HTMLElement | null>(null)
+const { focused: quizAreaFocused } = useFocusWithin(quizFocusRoot)
+const isPhoneLayout = useMediaQuery('(max-width: 767.98px)')
+/** On small screens, tuck the score bar while an answer field (or its hints) is focused so the keyboard has room. */
+const showScoreHud = computed(() => !isPhoneLayout.value || !quizAreaFocused.value)
 
 const flagCelebrate = computed(() => flagSuccess.value || gameState.value === 'bonus')
 
@@ -79,7 +92,11 @@ const showSkip = computed(
 )
 
 const showGame = computed(
-  () => ready.value && currentCountry.value && gameState.value !== 'failed'
+  () =>
+    ready.value &&
+    currentCountry.value &&
+    gameState.value !== 'failed' &&
+    gameState.value !== 'completed'
 )
 
 const screenShakeStyle = computed(() =>
@@ -95,11 +112,17 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
 </script>
 
 <template>
-  <div
-    class="relative min-h-dvh overflow-x-hidden bg-gradient-to-b from-sky-50 via-white to-emerald-50/80 text-neutral-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-emerald-950/40 dark:text-white"
-    :class="screenShakeActive ? 'animate-screen-shake' : ''"
-    :style="screenShakeStyle"
-  >
+  <div class="relative isolate min-h-dvh">
+    <!-- Static fill so viewport shake never reveals default body white at the edges. -->
+    <div
+      class="pointer-events-none fixed -inset-8 -z-10 bg-gradient-to-b from-sky-50 via-white to-emerald-50/80 dark:from-neutral-950 dark:via-neutral-900 dark:to-emerald-950/40"
+      aria-hidden="true"
+    />
+    <div
+      class="relative min-h-dvh overflow-x-hidden text-neutral-900 dark:text-white"
+      :class="screenShakeActive ? 'animate-screen-shake' : ''"
+      :style="screenShakeStyle"
+    >
     <ClientOnly>
       <FailScreen
         v-if="gameState === 'failed' && failSnapshot"
@@ -112,9 +135,16 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
         :answer-name="failSnapshot.answerName"
         @play-again="playAgainAfterFail()"
       />
+      <RunCompleteScreen
+        v-if="gameState === 'completed' && deckCompleteSnapshot"
+        :snapshot="deckCompleteSnapshot"
+        @play-again="playAgainAfterComplete()"
+        @back-leaderboard="exitToLeaderboard()"
+        @back-menu="exitToMenu()"
+      />
     </ClientOnly>
 
-    <div v-if="gameState !== 'failed'">
+    <div v-if="gameState !== 'failed' && gameState !== 'completed'">
       <main
         class="relative z-10 mx-auto flex min-h-dvh max-w-xl flex-col items-center overflow-visible px-5 pb-36 pt-10 md:max-w-2xl md:px-8 md:pt-14"
       >
@@ -126,11 +156,20 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
           >
             ← Change mode
           </button>
-          <span
-            class="rounded-full border border-violet-200/80 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-800 dark:border-violet-500/30 dark:bg-violet-950/40 dark:text-violet-200"
-          >
-            {{ modeLabel }}
-          </span>
+          <div class="flex flex-wrap items-center justify-end gap-2">
+       
+            <span
+              v-if="ready && showGame"
+              class="rounded-full border border-emerald-200/90 bg-emerald-50 px-3 py-1 text-xs font-bold tabular-nums uppercase tracking-wide text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-950/50 dark:text-emerald-100"
+            >
+              {{ hintsBank || 0 }} hints left
+            </span>
+            <span
+              class="rounded-full border border-violet-200/80 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-800 dark:border-violet-500/30 dark:bg-violet-950/40 dark:text-violet-200"
+            >
+              {{ modeLabel }}
+            </span>
+          </div>
         </div>
 
         <p class="mt-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
@@ -195,37 +234,44 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
               </div>
             </Transition>
 
-            <div class="flex w-full max-w-md flex-col items-center gap-4 overflow-visible">
+            <div
+              ref="quizFocusRoot"
+              class="flex w-full max-w-md flex-col items-center gap-4 overflow-visible"
+            >
               <template v-if="gameState === 'guessing' || gameState === 'bonus' || gameState === 'wrong_pending'">
                 <p class="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                  Which country is it?
+                  Which country is it? ({{roundsFinished + 1}}/{{ countries.length }})
                 </p>
-                <AutocompleteInput
-                  v-model="guess"
-                  :countries="countries"
-                  field="name"
-                  :disabled="flagInputLocked"
-                  :success="flagInputSuccess"
-                  :shake="wrongShake"
-                  :shake-amplitude-px="wrongShakeAmplitudePx"
-                  :shake-duration-ms="wrongShakeDurationMs"
-                  placeholder="Start typing…"
-                  aria-label="Country guess"
-                  @submit="submitFlag()"
-                />
+                <UFieldGroup size="xl" class="w-full gap-4 max-w-md">
+                  <AutocompleteInput
+                    v-model="guess"
+                    class="min-w-0 flex-1 max-w-none"
+                    :countries="countries"
+                    field="name"
+                    :disabled="flagInputLocked"
+                    :success="flagInputSuccess"
+                    :shake="wrongShake"
+                    :shake-amplitude-px="wrongShakeAmplitudePx"
+                    :shake-duration-ms="wrongShakeDurationMs"
+                    placeholder="Start typing…"
+                    aria-label="Country guess"
+                    @submit="submitFlag()"
+                  />
+                  <UButton
+                    color="neutral"
+                    size="xl"
+
+                    variant="subtle"
+
+                    icon="material-symbols:lightbulb"
+         class=""
+                    :disabled="flagHintsDisabled"
+                    :aria-label="flagHintButtonLabel"
+                    @click="takeFlagHint()"
+                  />
+                </UFieldGroup>
 
                 <div v-if="gameState === 'guessing'" class="flex w-full flex-col items-center gap-2">
-                  <UButton
-                    size="md"
-                    variant="soft"
-                    color="amber"
-                    class="font-semibold disabled:cursor-not-allowed disabled:opacity-50"
-                    :disabled="flagHintsDisabled"
-                    aria-label="Spend one saved hint to reveal part of the country name"
-                    @click="takeFlagHint()"
-                  >
-                    {{ flagHintButtonLabel }}
-                  </UButton>
                   <p
                     v-if="hintDisplay"
                     class="w-full rounded-xl border border-amber-200/80 bg-amber-50/90 px-4 py-2 text-center font-mono text-sm tracking-wide text-amber-950 dark:border-amber-500/25 dark:bg-amber-950/30 dark:text-amber-100"
@@ -260,7 +306,7 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
               </Transition>
             </div>
 
-            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+            <div class="flex flex-wrap items-center justify-center gap-3">
               <UButton
                 size="xl"
                 class="min-w-[12rem] font-bold shadow-lg transition hover:scale-[1.03] active:scale-[0.97]"
@@ -280,14 +326,23 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
                 Skip this one
               </UButton>
             </div>
+
+          
           </div>
         </ClientOnly>
 
         <ScoreBoard
-          v-if="ready && gameState !== 'failed' && gameState !== 'wrong_pending'"
+          v-if="
+            ready &&
+            gameState !== 'failed' &&
+            gameState !== 'wrong_pending' &&
+            gameState !== 'completed' &&
+            showScoreHud
+          "
           :streak="streak"
           :best-streak="bestStreak"
           :score="score"
+          :flags-left="flagsLeftInDeck"
           @leaderboards="openLeaderboardWarning()"
         />
 
@@ -308,6 +363,7 @@ const modeLabel = computed(() => (gameMode.value === 'marathon' ? 'Marathon' : '
           </template>
         </UModal>
       </main>
+    </div>
     </div>
   </div>
 </template>

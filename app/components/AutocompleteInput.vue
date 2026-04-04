@@ -171,19 +171,16 @@ function onBlur() {
     :class="shake ? 'animate-shake' : ''"
     :style="
       shake
-        ? ({
-            '--shake-x': `${props.shakeAmplitudePx}px`,
-            '--shake-dur': `${props.shakeDurationMs}ms`
-          } as Record<string, string>)
+        ? ({ '--shake-x': `${props.shakeAmplitudePx}px` } as Record<string, string>)
         : undefined
     "
   >
     <UInput
       v-model="query"
       size="xl"
-      color="neutral"
+
       variant="outline"
-      class="w-full text-center text-lg font-medium shadow-md transition-all duration-300 md:text-xl"
+      class="w-full text-center text-lg font-medium transition-all duration-300 md:text-xl"
       :class="[
         success
           ? 'ring-4 ring-emerald-400/80 !shadow-[0_0_28px_rgba(52,211,153,0.45)] dark:ring-emerald-400/70'
@@ -259,11 +256,11 @@ function onBlur() {
     transform: translateX(calc(-0.65 * var(--shake-x, 6px)));
   }
   80% {
-    transform: translateX(calc(var(--shake-x, 6px) * 0.45));
+    transform: translateX(calc(0.45 * var(--shake-x, 6px)));
   }
 }
 
 .animate-shake {
-  animation: shake var(--shake-dur, 0.55s) cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>
