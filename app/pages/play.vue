@@ -124,10 +124,7 @@ const modeLabel = computed(() =>
 <template>
   <div class="relative isolate min-h-dvh">
     <!-- Static fill so viewport shake never reveals default body white at the edges. -->
-    <div
-      class="pointer-events-none fixed -inset-8 -z-10"
-      aria-hidden="true"
-    />
+    <div class="pointer-events-none fixed -inset-8 -z-10" aria-hidden="true" />
     <div
       class="relative min-h-dvh overflow-x-hidden text-neutral-900 dark:text-white"
       :class="screenShakeActive ? 'animate-screen-shake' : ''"
