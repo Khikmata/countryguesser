@@ -14,39 +14,40 @@ const emit = defineEmits<{
 }>();
 
 function pick(arr: string[]) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  return arr[Math.floor(Math.random() * arr.length)]
 }
 
 const badRuns = [
-  "💀",
-  "cooked",
-  "ain’t no way 😭",
-  "that one didn’t go well",
-  "we don’t talk about this",
-  "yikes...",
-  "ok that was rough",
-];
+  '💀',
+  'cooked',
+  'ain’t no way 😭',
+  'that one didn’t go well',
+  'we don’t talk about this',
+  'yikes...',
+  'ok that was rough'
+]
 
 const title = computed(() => {
-  const ratio = props.guessedFlags / props.runTarget;
-  const left = props.flagsLeft;
+  const ratio = props.guessedFlags / props.runTarget
+  const left = props.flagsLeft
 
   // Perfect / almost perfect
-  if (left === 0) return "WHAAAAT";
-  if (left === 1) return "So close!";
-  if (left === 2) return "Oof, that one was tricky";
+  if (left === 0) return 'WHAAAAT'
+  if (left === 1) return 'So close!'
+  if (left === 2) return 'Oof, that one was tricky'
 
   // High performance
-  if (ratio >= 0.85) return "You’ll get it next run";
-  if (ratio >= 0.7) return "Not bad at all";
-  if (ratio >= 0.5) return "Better luck next time";
+  if (ratio >= 0.85) return 'You’ll get it next run'
+  if (ratio >= 0.7) return 'Not bad at all'
+  if (ratio >= 0.5) return 'Better luck next time'
 
   // Low performance
-  if (ratio >= 0.3) return "Getting there";
+  if (ratio >= 0.3) return 'Getting there'
 
   // Really bad → random
-  return pick(badRuns);
-});
+  return pick(badRuns)
+})
+
 </script>
 
 <template>

@@ -125,7 +125,7 @@ const modeLabel = computed(() =>
   <div class="relative isolate min-h-dvh">
     <!-- Static fill so viewport shake never reveals default body white at the edges. -->
     <div
-      class="pointer-events-none fixed -inset-8 -z-10 bg-gradient-to-b from-sky-50 via-white to-emerald-50/80 dark:from-neutral-950 dark:via-neutral-900 dark:to-emerald-950/40"
+      class="pointer-events-none fixed -inset-8 -z-10"
       aria-hidden="true"
     />
     <div
