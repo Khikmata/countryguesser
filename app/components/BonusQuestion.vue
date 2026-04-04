@@ -2,10 +2,10 @@
 import type { Country } from "~/types/quiz";
 
 defineProps<{
-  countryName: string;
   countries: Country[];
   disabled?: boolean;
   shake?: boolean;
+  currentCountry: Country | null;
   capitalHintDisplay?: string;
   capitalHintDisabled?: boolean;
   capitalHintLabel?: string;
@@ -26,7 +26,7 @@ const model = defineModel<string>({ default: "" });
     >
       Bonus: what’s the capital of
       <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{
-        countryName
+        currentCountry?.name
       }}</span
       >?
     </p>
@@ -36,6 +36,7 @@ const model = defineModel<string>({ default: "" });
     <div class="mt-4 flex w-full flex-col items-center gap-3">
       <UFieldGroup size="xl" class="w-full gap-4">
         <AutocompleteInput
+          :key="currentCountry!.id"
           v-model="model"
           class="min-w-0 flex-1 max-w-none"
           field="capital"

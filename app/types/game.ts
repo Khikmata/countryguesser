@@ -1,3 +1,5 @@
+import type { Country } from "./quiz";
+
 export type GameModeId = "one-life" | "marathon";
 
 export type MarathonMissKind = "wrong" | "skipped";
@@ -16,6 +18,16 @@ export interface DeckCompleteMarathon {
   accuracyPct: number;
   bestStreakThisRun: number;
   missed: { name: string; kind: MarathonMissKind }[];
+}
+
+export interface BonusQuestion {
+  countryName: string;
+  countries: Country[];
+  disabled?: boolean;
+  shake?: boolean;
+  capitalHintDisplay?: string;
+  capitalHintDisabled?: boolean;
+  capitalHintLabel?: string;
 }
 
 export type DeckCompleteSnapshot = DeckCompleteOneLife | DeckCompleteMarathon;
