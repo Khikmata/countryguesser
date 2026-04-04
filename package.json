@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint . --fix",
     "prettify": "npx prettier --write .",
-    "prepare": "husky"
+    "prepare": "npx husky install"
   },
   "dependencies": {
     "@nuxt/a11y": "^1.0.0-alpha.1",
@@ -26,5 +26,8 @@
     "tailwindcss": "^4.2.2",
     "vue": "^3.5.31",
     "vue-router": "^5.0.4"
+  },
+  "optionalDependencies": {
+    "husky": "^8.0.0"
   }
 }
