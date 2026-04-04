@@ -36,7 +36,6 @@ const model = defineModel<string>({ default: "" });
     <div class="mt-4 flex w-full flex-col items-center gap-3">
       <UFieldGroup size="xl" class="w-full gap-4">
         <AutocompleteInput
-          :key="currentCountry!.id"
           v-model="model"
           class="min-w-0 flex-1 max-w-none"
           field="capital"

@@ -281,7 +281,6 @@ const modeLabel = computed(() =>
                   </p>
                   <UFieldGroup size="xl" class="w-full gap-4 max-w-md">
                     <AutocompleteInput
-                      :key="currentCountry!.id"
                       v-model="guess"
                       class="min-w-0 flex-1 max-w-none"
                       :countries="countries"

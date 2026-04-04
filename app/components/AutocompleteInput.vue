@@ -17,7 +17,6 @@ const props = withDefaults(
     shakeDurationMs?: number;
     placeholder?: string;
     ariaLabel?: string;
-    focusKey?: string;
   }>(),
   {
     field: "name",
@@ -37,7 +36,7 @@ const query = ref("");
 const debouncedQ = ref("");
 const open = ref(false);
 const activeIdx = ref(-1);
-const inputRef = ref<HTMLInputElement | null>(null);
+const inputRef = ref<HTMLInputElement | null>(null)
 const pickedCommit = ref<string | null>(null);
 const rootId = useId();
 const listId = `${rootId}-list`;
@@ -158,19 +157,20 @@ function onFocus() {
   }
 }
 
-function focusInput() {
-  const el = inputRef.value?.$el?.querySelector("input");
-  el?.focus();
-}
 
-watch(
-  () => props.focusKey,
-  async () => {
-    if (props.disabled) return;
-    await nextTick();
-    focusInput();
-  },
-);
+onMounted(async () => {
+  if (props.field === 'name' || props.disabled) return
+
+  await nextTick()
+  focusInput()
+})
+
+
+
+function focusInput() {
+  const el = inputRef.value?.$el?.querySelector('input')
+  el?.focus()
+}
 
 function onBlur() {
   open.value = false;
@@ -195,7 +195,6 @@ function onBlur() {
       ref="inputRef"
       v-model="query"
       size="xl"
-      autofocus
       variant="outline"
       class="w-full text-center text-lg font-medium transition-all duration-300 md:text-xl"
       :class="[
