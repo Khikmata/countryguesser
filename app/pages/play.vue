@@ -160,7 +160,7 @@ const modeLabel = computed(() => (gameMode.value === "marathon" ? "Marathon" : "
           <div class="flex w-full flex-wrap items-center justify-between gap-3">
             <button
               type="button"
-              class="text-sm font-semibold text-violet-600 underline-offset-4 hover:underline dark:text-violet-300"
+              class="text-sm font-semibold text-neutral-500 underline-offset-4 hover:underline dark:text-violet-300"
               @click="exitToMenu()"
             >
               ← Change mode
@@ -283,7 +283,7 @@ const modeLabel = computed(() => (gameMode.value === "marathon" ? "Marathon" : "
                       color="neutral"
                       size="xl"
                       variant="subtle"
-                      icon="material-symbols:lightbulb"
+                      icon="basil:lightbulb-outline"
                       :disabled="flagHintsDisabled"
                       :aria-label="flagHintButtonLabel"
                       @click="takeFlagHint()"

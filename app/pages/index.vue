@@ -37,7 +37,7 @@ function play(mode: GameModeId) {
 
 <template>
   <div
-    class="min-h-dvh bg-gradient-to-b from-sky-50 via-white to-emerald-50/80 text-neutral-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-emerald-950/40 dark:text-white"
+    class="min-h-dvh bg-gradient-to-b from-0 via-white to-emerald-50/60 text-neutral-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-emerald-950/40 dark:text-white"
   >
     <main
       class="mx-auto flex min-h-dvh max-w-2xl flex-col justify-between px-5 pb-8 pt-12 md:px-8 md:pt-16"
@@ -93,7 +93,7 @@ function play(mode: GameModeId) {
       <div class="mt-12 flex justify-center">
         <NuxtLink
           to="/leaderboard"
-          class="rounded-full border border-violet-300/70 bg-violet-800 px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-violet-900 shadow-md transition hover:bg-violet-200/95 active:scale-[0.98] dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
+          class="rounded-full border border-violet-300/70 bg-neutral-800 px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-neutral-100 shadow-md transition hover:bg-violet-200/95 active:scale-[0.98] dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
         >
           Leaderboards
         </NuxtLink>

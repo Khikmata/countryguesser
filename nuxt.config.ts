@@ -8,21 +8,34 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxt/a11y", "@nuxt/eslint"],
+  modules: ["@nuxt/ui", "@nuxt/fonts", "@vueuse/nuxt", "@nuxt/a11y", "@nuxt/eslint"],
   colorMode: {
     preference: "system",
+  },
+  fonts: {
+    defaults: {
+      weights: [500, 600, 700, 800],
+      styles: ["normal"],
+      subsets: ["latin"],
+    },
+  },
+  hooks: {
+    "build:manifest": (manifest) => {
+      // find the app entry, css list
+      const css = manifest["node_modules/nuxt/dist/app/entry.js"]?.css;
+      if (css) {
+        // start from the end of the array and go to the beginning
+        for (let i = css.length - 1; i >= 0; i--) {
+          // if it starts with 'entry', remove it from the list
+          if (css?.[i]?.startsWith("entry")) css.splice(i, 1);
+        }
+      }
+    },
   },
   app: {
     head: {
       title: "Countryguesser",
       htmlAttrs: { lang: "en" },
-      link: [
-        { rel: "preconnect", href: "https://fonts.bunny.net" },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap",
-        },
-      ],
       meta: [
         {
           name: "viewport",
@@ -38,10 +51,6 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/css/main.css"],
-  image: {
-    // domains: ['flagcdn.com', 'upload.wikimedia.org'],
-    provider: "none",
-  },
   // Server-only: set NUXT_COUNTRIES_USE_REMOTE=false if restcountries.com is unreachable (VPN/firewall).
   runtimeConfig: {
     countriesUseRemote: false,
