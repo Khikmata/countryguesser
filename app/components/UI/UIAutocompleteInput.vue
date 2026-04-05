@@ -36,7 +36,7 @@ const query = ref("");
 const debouncedQ = ref("");
 const open = ref(false);
 const activeIdx = ref(-1);
-const inputRef = ref<HTMLInputElement | null>(null)
+const inputRef = useTemplateRef<ComponentPublicInstance | null>("");
 const pickedCommit = ref<string | null>(null);
 const rootId = useId();
 const listId = `${rootId}-list`;
@@ -99,8 +99,7 @@ watch([debouncedQ, topFive, () => props.disabled, pickedCommit], () => {
 });
 
 watch(topFive, () => {
-  if (activeIdx.value >= topFive.value.length)
-    activeIdx.value = topFive.value.length - 1;
+  if (activeIdx.value >= topFive.value.length) activeIdx.value = topFive.value.length - 1;
 });
 
 function segments(label: string) {
@@ -157,19 +156,16 @@ function onFocus() {
   }
 }
 
-
 onMounted(async () => {
-  if (props.field === 'name' || props.disabled) return
+  if (props.field === "name" || props.disabled) return;
 
-  await nextTick()
-  focusInput()
-})
-
-
+  await nextTick();
+  focusInput();
+});
 
 function focusInput() {
-  const el = inputRef.value?.$el?.querySelector('input')
-  el?.focus()
+  const el = inputRef.value?.$el?.querySelector("input");
+  el?.focus();
 }
 
 function onBlur() {
@@ -183,12 +179,7 @@ function onBlur() {
     class="relative w-full max-w-md transition-transform duration-300"
     :class="shake ? 'animate-shake' : ''"
     :style="
-      shake
-        ? ({ '--shake-x': `${props.shakeAmplitudePx}px` } as Record<
-            string,
-            string
-          >)
-        : undefined
+      shake ? ({ '--shake-x': `${props.shakeAmplitudePx}px` } as Record<string, string>) : undefined
     "
   >
     <UInput
@@ -208,9 +199,7 @@ function onBlur() {
       :aria-label="ariaLabel"
       :aria-expanded="open"
       :aria-controls="listId"
-      :aria-activedescendant="
-        activeIdx >= 0 ? `${listId}-opt-${activeIdx}` : undefined
-      "
+      :aria-activedescendant="activeIdx >= 0 ? `${listId}-opt-${activeIdx}` : undefined"
       role="combobox"
       autocomplete="off"
       @keydown="onKeydown"

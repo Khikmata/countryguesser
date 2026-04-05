@@ -11,7 +11,7 @@ const LS_BY_MODE: Record<GameModeId, string> = {
   marathon: "gf-leaderboard-marathon-v1",
 };
 
-const MAX_ENTRIES = 20;
+const MAX_ENTRIES = 200;
 
 function loadRaw(mode: GameModeId): LeaderboardEntry[] {
   if (!import.meta.client) return [];
@@ -46,10 +46,7 @@ export function useLeaderboard() {
   }
 
   /** Record a score and return 1-based rank among entries for this mode (after insert). */
-  function recordScore(
-    score: number,
-    mode: GameModeId,
-  ): { rank: number; total: number } {
+  function recordScore(score: number, mode: GameModeId): { rank: number; total: number } {
     if (!import.meta.client) return { rank: 1, total: 1 };
     const id =
       typeof crypto !== "undefined" && crypto.randomUUID
@@ -64,26 +61,19 @@ export function useLeaderboard() {
   }
 
   /** Marathon board: only add a row when this beats the current #1 score (keeps list from spamming). */
-  function tryRecordMarathonBest(
-    score: number,
-  ): { rank: number; total: number } | null {
+  function tryRecordMarathonBest(score: number): { rank: number; total: number } | null {
     if (!import.meta.client) return null;
     const entries = loadRaw("marathon");
-    const topScore = entries.length
-      ? Math.max(...entries.map((e) => e.score))
-      : 0;
+    const topScore = entries.length ? Math.max(...entries.map((e) => e.score)) : 0;
     if (score <= topScore) return null;
     return recordScore(score, "marathon");
   }
 
-  function getTop(mode: GameModeId, limit = 50): LeaderboardEntry[] {
+  function getTop(mode: GameModeId, limit = 10): LeaderboardEntry[] {
     return getEntries(mode).slice(0, limit);
   }
 
-  function rankForScore(
-    score: number,
-    mode: GameModeId,
-  ): { rank: number; total: number } {
+  function rankForScore(score: number, mode: GameModeId): { rank: number; total: number } {
     const entries = getEntries(mode);
     const better = entries.filter((e) => e.score > score).length;
     return { rank: better + 1, total: entries.length };

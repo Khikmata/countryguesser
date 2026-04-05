@@ -74,9 +74,9 @@ const title = computed(() => {
           </h2>
           <p class="mt-3 text-center text-neutral-600 dark:text-neutral-300">
             The flag was
-            <span
-              class="font-semibold text-emerald-600 dark:text-emerald-400"
-              >{{ answerName }}</span
+            <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{
+              answerName
+            }}</span
             >.
           </p>
 
@@ -87,29 +87,21 @@ const title = computed(() => {
               >
                 Flags this run
               </dt>
-              <dd
-                class="mt-1 text-2xl font-bold tabular-nums text-neutral-900 dark:text-white"
-              >
-                {{ guessedFlags
-                }}<span class="text-neutral-400 dark:text-neutral-500"> / </span
+              <dd class="mt-1 text-2xl font-bold tabular-nums text-neutral-900 dark:text-white">
+                {{ guessedFlags }}<span class="text-neutral-400 dark:text-neutral-500"> / </span
                 >{{ runTarget }}
               </dd>
               <dd class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                {{ flagsLeft }} flag{{ flagsLeft === 1 ? "" : "s" }} left to
-                clear the run
+                {{ flagsLeft }} flag{{ flagsLeft === 1 ? "" : "s" }} left to clear the run
               </dd>
             </div>
-            <div
-              class="rounded-2xl bg-violet-500/10 py-4 dark:bg-violet-500/15"
-            >
+            <div class="rounded-2xl bg-violet-500/10 py-4 dark:bg-violet-500/15">
               <dt
                 class="text-xs font-medium uppercase tracking-wide text-violet-700 dark:text-violet-300"
               >
                 Final score
               </dt>
-              <dd
-                class="mt-1 text-2xl font-bold tabular-nums text-violet-900 dark:text-violet-100"
-              >
+              <dd class="mt-1 text-2xl font-bold tabular-nums text-violet-900 dark:text-violet-100">
                 {{ finalScore }}
               </dd>
             </div>
@@ -119,13 +111,9 @@ const title = computed(() => {
               >
                 Leaderboard
               </dt>
-              <dd
-                class="mt-1 text-lg font-bold text-amber-950 dark:text-amber-50"
-              >
+              <dd class="mt-1 text-lg font-bold text-amber-950 dark:text-amber-50">
                 #{{ rank
-                }}<span
-                  class="font-normal text-amber-800/80 dark:text-amber-200/90"
-                >
+                }}<span class="font-normal text-amber-800/80 dark:text-amber-200/90">
                   of {{ leaderboardTotal }}</span
                 >
               </dd>
@@ -133,12 +121,7 @@ const title = computed(() => {
           </dl>
 
           <div class="mt-8 flex flex-col gap-3">
-            <UButton
-              block
-              size="xl"
-              class="font-bold"
-              @click="emit('play-again')"
-            >
+            <UButton block size="xl" class="font-bold" @click="emit('play-again')">
               Play again
             </UButton>
             <UButton

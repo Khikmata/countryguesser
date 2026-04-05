@@ -1,20 +1,21 @@
 <script setup lang="ts">
+import GameHowItWorks from "~/components/Game/GameHowItWorks.vue";
 import type { GameModeId } from "~/types/game";
 
 definePageMeta({ layout: false });
 
-useHead({
-  title: "Guess the Flag",
-  meta: [
-    {
-      name: "description",
-      content:
-        "A tiny Neal.fun-style flag quiz. Name the country, then the capital.",
-    },
-  ],
+useSeoMeta({
+  title: "Countryguesser — country quiz",
+  description:
+    "Free flag quiz: choose One life or Marathon, name countries from flags, guess capitals for points and rating on leaderboards",
+  ogTitle: "Countryguesser",
+  ogDescription:
+    "Geography game — name the country from its flag, then the capital. Two modes, hints, and speed scoring.",
+  ogType: "website",
+  twitterCard: "summary_large_image",
 });
 
-const { ready, startPlayFromMenu } = useGame();
+const { status, startPlayFromMenu } = useGame();
 
 const modes: { id: GameModeId; title: string; blurb: string }[] = [
   {
@@ -43,9 +44,7 @@ function play(mode: GameModeId) {
     >
       <div>
         <div class="flex flex-col gap-2 mb-12">
-          <h1
-            class="text-center text-4xl font-extrabold tracking-tight md:text-5xl"
-          >
+          <h1 class="text-center text-4xl font-extrabold tracking-tight md:text-5xl">
             Countryguesser
           </h1>
           <p
@@ -54,50 +53,40 @@ function play(mode: GameModeId) {
             World flags and more
           </p>
         </div>
-        <p
-          class="mx-auto mt-3 max-w-md text-center text-neutral-600 dark:text-neutral-400"
-        >
+        <p class="mx-auto mt-3 max-w-md text-center text-neutral-600 dark:text-neutral-400">
           Pick how you want to play. You can switch anytime from the menu.
         </p>
-        <ClientOnly>
-          <div
-            v-if="!ready"
-            class="mt-4 flex flex-col items-center gap-3 text-neutral-500"
+        <div class="mt-4 grid gap-5 md:grid-cols-2">
+          <UCard
+            v-for="m in modes"
+            :key="m.id"
+            class="flex flex-col ring-1 ring-black/5 dark:ring-white/10"
           >
-            <UIcon
-              name="i-lucide-loader-2"
-              class="size-12 animate-spin text-emerald-500"
-            />
-            <p>Loading flags…</p>
-          </div>
-          <ul v-else class="mt-4 grid gap-5 md:grid-cols-2">
-            <li
-              v-for="m in modes"
-              :key="m.id"
-              class="flex flex-col rounded-2xl border border-black/10 bg-white/90 p-6 shadow-lg dark:border-white/10 dark:bg-neutral-900/90"
-            >
-              <div class="flex items-start justify-between gap-2">
-                <h2 class="text-xl font-bold tracking-tight">{{ m.title }}</h2>
-              </div>
-              <p
-                class="mt-2 flex-1 text-sm text-neutral-600 dark:text-neutral-400"
-              >
-                {{ m.blurb }}
-              </p>
+            <template #header>
+              <h2 class="text-xl font-bold tracking-tight">{{ m.title }}</h2>
+            </template>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              {{ m.blurb }}
+            </p>
+            <ClientOnly>
               <UButton
                 size="xl"
                 color="neutral"
-                class="mt-6 w-full justify-center font-bold shadow-md cursor-pointer"
+                class="mt-6 w-full justify-center cursor-pointer font-bold shadow-md"
                 @click="play(m.id)"
               >
                 Play {{ m.title.toLowerCase() }}
               </UButton>
-            </li>
-          </ul>
-        </ClientOnly>
-
+              <template #fallback>
+                <USkeleton class="mt-6 h-10 w-full" />
+              </template>
+            </ClientOnly>
+          </UCard>
+        </div>
         <div class="mt-6 flex justify-center">
-          <GameHowItWorks />
+          <ClientOnly>
+            <GameHowItWorks />
+          </ClientOnly>
         </div>
       </div>
 

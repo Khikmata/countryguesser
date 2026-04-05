@@ -21,9 +21,7 @@ const model = defineModel<string>({ default: "" });
 
 <template>
   <div class="w-full max-w-md overflow-visible">
-    <p
-      class="text-center text-base leading-relaxed text-neutral-600 dark:text-neutral-300"
-    >
+    <p class="text-center text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
       Bonus: what’s the capital of
       <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{
         currentCountry?.name
@@ -35,7 +33,7 @@ const model = defineModel<string>({ default: "" });
     </p>
     <div class="mt-4 flex w-full flex-col items-center gap-3">
       <UFieldGroup size="xl" class="w-full gap-4">
-        <AutocompleteInput
+        <UIAutocompleteInput
           v-model="model"
           class="min-w-0 flex-1 max-w-none"
           field="capital"

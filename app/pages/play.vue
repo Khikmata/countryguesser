@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { useFocusWithin, useMediaQuery } from "@vueuse/core";
+import GameBonusQuestion from "~/components/Game/GameBonusQuestion.vue";
+import GameFlagDisplay from "~/components/Game/GameFlagDisplay.vue";
+import GameScoreBoard from "~/components/Game/GameScoreBoard.vue";
+import ScreenComplete from "~/components/Screen/ScreenComplete.vue";
+import ScreenFail from "~/components/Screen/ScreenFail.vue";
 
 definePageMeta({
   layout: false,
   middleware: "play-session",
 });
 
-useHead({
-  title: "Play — Guess the Flag",
-  meta: [
-    { name: "description", content: "Name the country, then the capital." },
-  ],
+useSeoMeta({
+  title: "Countryguesser",
+  description:
+    "Active round: guess the country from its flag, then the capital for bonus points. One life or Marathon mode.",
+  ogTitle: "Countryguesser",
+  ogDescription:
+    "Name the country from the flag, then the capital. Speed bonuses and local leaderboards.",
+  ogType: "website",
+  twitterCard: "summary_large_image",
+  robots: "noindex, nofollow",
 });
 
 const {
@@ -75,19 +85,13 @@ const quizFocusRoot = ref<HTMLElement | null>(null);
 const { focused: quizAreaFocused } = useFocusWithin(quizFocusRoot);
 const isPhoneLayout = useMediaQuery("(max-width: 767.98px)");
 /** On small screens, tuck the score bar while an answer field (or its hints) is focused so the keyboard has room. */
-const showScoreHud = computed(
-  () => !isPhoneLayout.value || !quizAreaFocused.value,
-);
+const showScoreHud = computed(() => !isPhoneLayout.value || !quizAreaFocused.value);
 
-const flagCelebrate = computed(
-  () => flagSuccess.value || gameState.value === "bonus",
-);
+const flagCelebrate = computed(() => flagSuccess.value || gameState.value === "bonus");
 
 const flagInputLocked = computed(() => gameState.value !== "guessing");
 
-const flagInputSuccess = computed(
-  () => flagSuccess.value || gameState.value === "bonus",
-);
+const flagInputSuccess = computed(() => flagSuccess.value || gameState.value === "bonus");
 
 const capitalDisabled = computed(() => gameState.value !== "bonus");
 
@@ -116,9 +120,7 @@ const screenShakeStyle = computed(() =>
     : undefined,
 );
 
-const modeLabel = computed(() =>
-  gameMode.value === "marathon" ? "Marathon" : "One life",
-);
+const modeLabel = computed(() => (gameMode.value === "marathon" ? "Marathon" : "One life"));
 </script>
 
 <template>
@@ -131,7 +133,7 @@ const modeLabel = computed(() =>
       :style="screenShakeStyle"
     >
       <ClientOnly>
-        <FailScreen
+        <ScreenFail
           v-if="gameState === 'failed' && failSnapshot"
           :guessed-flags="failSnapshot.guessed"
           :run-target="failSnapshot.target"
@@ -142,7 +144,7 @@ const modeLabel = computed(() =>
           :answer-name="failSnapshot.answerName"
           @play-again="playAgainAfterFail()"
         />
-        <RunCompleteScreen
+        <ScreenComplete
           v-if="gameState === 'completed' && deckCompleteSnapshot"
           :snapshot="deckCompleteSnapshot"
           @play-again="playAgainAfterComplete()"
@@ -164,46 +166,36 @@ const modeLabel = computed(() =>
               ← Change mode
             </button>
             <div class="flex flex-wrap items-center justify-end gap-2">
-              <span
+              <UBadge
                 v-if="ready && showGame"
-                class="rounded-full border border-emerald-200/90 bg-emerald-50 px-3 py-1 text-xs font-bold tabular-nums uppercase tracking-wide text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-950/50 dark:text-emerald-100"
+                color="success"
+                variant="subtle"
+                size="md"
+                class="uppercase tracking-wide"
               >
                 {{ hintsBank || 0 }} hints left
-              </span>
-              <span
-                class="rounded-full border border-violet-200/80 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-800 dark:border-violet-500/30 dark:bg-violet-950/40 dark:text-violet-200"
-              >
+              </UBadge>
+              <UBadge color="secondary" variant="subtle" size="md" class="uppercase tracking-wide">
                 {{ modeLabel }}
-              </span>
+              </UBadge>
             </div>
           </div>
 
           <p
             class="mt-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
           >
-            World flags
+            World flags and more
           </p>
-          <h1
-            class="mt-2 text-center text-4xl font-extrabold tracking-tight md:text-5xl"
-          >
+          <h1 class="mt-2 text-center text-4xl font-extrabold tracking-tight md:text-5xl">
             Guess the flag
           </h1>
 
           <ClientOnly>
-            <div
-              v-if="!ready"
-              class="mt-16 flex flex-col items-center gap-3 text-neutral-500"
-            >
-              <UIcon
-                name="i-lucide-loader-2"
-                class="size-12 animate-spin text-emerald-500"
-              />
+            <div v-if="!ready" class="mt-16 flex flex-col items-center gap-3 text-neutral-500">
+              <UIcon name="i-lucide-loader-2" class="size-12 animate-spin text-emerald-500" />
               <p>Loading flags from around the world…</p>
             </div>
-            <div
-              v-else-if="showGame"
-              class="mt-10 flex w-full flex-col items-center gap-8"
-            >
+            <div v-else-if="showGame" class="mt-10 flex w-full flex-col items-center gap-8">
               <Transition
                 mode="out-in"
                 enter-active-class="transition duration-[400ms] ease-out"
@@ -213,7 +205,7 @@ const modeLabel = computed(() =>
                 leave-from-class="opacity-100"
                 leave-to-class="opacity-0 -translate-y-3 scale-[0.98]"
               >
-                <FlagDisplay
+                <GameFlagDisplay
                   :key="currentCountry!.id"
                   :src="currentCountry!.flagSvg"
                   alt="Flag of a mystery country — can you name it?"
@@ -240,10 +232,7 @@ const modeLabel = computed(() =>
                 enter-to-class="opacity-100 translate-y-0"
               >
                 <div
-                  v-if="
-                    (microcopy || capitalSpeedBonusPts != null) &&
-                    gameState === 'bonus'
-                  "
+                  v-if="(microcopy || capitalSpeedBonusPts != null) && gameState === 'bonus'"
                   class="flex w-full max-w-md flex-col items-center gap-1 text-center"
                 >
                   <p
@@ -272,15 +261,11 @@ const modeLabel = computed(() =>
                     gameState === 'wrong_pending'
                   "
                 >
-                  <p
-                    class="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400"
-                  >
-                    Which country is it? ({{ roundsFinished + 1 }}/{{
-                      countries.length
-                    }})
+                  <p class="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                    Which country is it?
                   </p>
                   <UFieldGroup size="xl" class="w-full gap-4 max-w-md">
-                    <AutocompleteInput
+                    <UIAutocompleteInput
                       v-model="guess"
                       class="min-w-0 flex-1 max-w-none"
                       :countries="countries"
@@ -330,7 +315,7 @@ const modeLabel = computed(() =>
                     v-if="gameState === 'bonus'"
                     class="relative z-20 w-full overflow-visible pt-2"
                   >
-                    <BonusQuestion
+                    <GameBonusQuestion
                       v-model="capitalGuess"
                       :current-country="currentCountry"
                       :countries="countries"
@@ -367,28 +352,22 @@ const modeLabel = computed(() =>
                     Skip this one
                   </UButton>
                 </div>
-                <p
-                  v-if="flagsLeftInDeck !== undefined"
-                  class="text-center text-[11px] font-bold uppercase tracking-wide text-neutral-500 dark:text-neutral-400"
-                >
-                  <span
-                    class="tabular-nums text-neutral-800 dark:text-neutral-200"
-                    >{{ flagsLeftInDeck }}</span
+                <div v-if="ready && showGame" class="flex justify-center">
+                  <UBadge
+                    color="neutral"
+                    variant="outline"
+                    size="sm"
+                    class="uppercase tracking-wide"
                   >
-                  flag(s) left
-                </p>
+                    {{ flagsLeftInDeck }} flag(s) left
+                  </UBadge>
+                </div>
               </div>
             </div>
           </ClientOnly>
 
-          <ScoreBoard
-            v-if="
-              ready &&
-              gameState !== 'failed' &&
-              gameState !== 'wrong_pending' &&
-              gameState !== 'completed' &&
-              showScoreHud
-            "
+          <GameScoreBoard
+            v-if="ready && (gameState === 'guessing' || gameState === 'bonus') && showScoreHud"
             :streak="streak"
             :best-streak="bestStreak"
             :score="score"
@@ -402,16 +381,12 @@ const modeLabel = computed(() =>
           >
             <template #footer="{ close }">
               <div class="flex w-full flex-wrap justify-end gap-2">
-                <UButton
-                  variant="soft"
-                  color="neutral"
-                  class="font-semibold"
-                  @click="close"
-                >
+                <UButton variant="solid" color="neutral" class="font-semibold" @click="close">
                   Stay
                 </UButton>
                 <UButton
-                  color="violet"
+                  variant="soft"
+                  color="neutral"
                   class="font-semibold"
                   @click="confirmLeaveForLeaderboard(close)"
                 >
@@ -467,7 +442,6 @@ const modeLabel = computed(() =>
 }
 
 .animate-screen-shake {
-  animation: screen-shake var(--sk-dur, 600ms)
-    cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: screen-shake var(--sk-dur, 600ms) cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>

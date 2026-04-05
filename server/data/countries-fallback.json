@@ -3,246 +3,287 @@
     "name": { "common": "Canada" },
     "capital": ["Ottawa"],
     "flags": { "png": "https://flagcdn.com/w320/ca.png" },
-    "cca2": "CA"
+    "cca2": "CA",
+    "currencies": { "CAD": { "name": "Canadian dollar", "symbol": "$" } }
   },
   {
     "name": { "common": "United States" },
     "capital": ["Washington, D.C."],
     "flags": { "png": "https://flagcdn.com/w320/us.png" },
-    "cca2": "US"
+    "cca2": "US",
+    "currencies": { "USD": { "name": "United States dollar", "symbol": "$" } }
   },
   {
     "name": { "common": "Mexico" },
     "capital": ["Mexico City"],
     "flags": { "png": "https://flagcdn.com/w320/mx.png" },
-    "cca2": "MX"
+    "cca2": "MX",
+    "currencies": { "MXN": { "name": "Mexican peso", "symbol": "$" } }
   },
   {
     "name": { "common": "Brazil" },
     "capital": ["Brasília"],
     "flags": { "png": "https://flagcdn.com/w320/br.png" },
-    "cca2": "BR"
+    "cca2": "BR",
+    "currencies": { "BRL": { "name": "Brazilian real", "symbol": "R$" } }
   },
   {
     "name": { "common": "Argentina" },
     "capital": ["Buenos Aires"],
     "flags": { "png": "https://flagcdn.com/w320/ar.png" },
-    "cca2": "AR"
+    "cca2": "AR",
+    "currencies": { "ARS": { "name": "Argentine peso", "symbol": "$" } }
   },
   {
     "name": { "common": "United Kingdom" },
     "capital": ["London"],
     "flags": { "png": "https://flagcdn.com/w320/gb.png" },
-    "cca2": "GB"
+    "cca2": "GB",
+    "currencies": { "GBP": { "name": "British pound", "symbol": "£" } }
   },
   {
     "name": { "common": "France" },
     "capital": ["Paris"],
     "flags": { "png": "https://flagcdn.com/w320/fr.png" },
-    "cca2": "FR"
+    "cca2": "FR",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Germany" },
     "capital": ["Berlin"],
     "flags": { "png": "https://flagcdn.com/w320/de.png" },
-    "cca2": "DE"
+    "cca2": "DE",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Italy" },
     "capital": ["Rome"],
     "flags": { "png": "https://flagcdn.com/w320/it.png" },
-    "cca2": "IT"
+    "cca2": "IT",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Spain" },
     "capital": ["Madrid"],
     "flags": { "png": "https://flagcdn.com/w320/es.png" },
-    "cca2": "ES"
+    "cca2": "ES",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Poland" },
     "capital": ["Warsaw"],
     "flags": { "png": "https://flagcdn.com/w320/pl.png" },
-    "cca2": "PL"
+    "cca2": "PL",
+    "currencies": { "PLN": { "name": "Polish złoty", "symbol": "zł" } }
   },
   {
     "name": { "common": "Japan" },
     "capital": ["Tokyo"],
     "flags": { "png": "https://flagcdn.com/w320/jp.png" },
-    "cca2": "JP"
+    "cca2": "JP",
+    "currencies": { "JPY": { "name": "Japanese yen", "symbol": "¥" } }
   },
   {
     "name": { "common": "China" },
     "capital": ["Beijing"],
     "flags": { "png": "https://flagcdn.com/w320/cn.png" },
-    "cca2": "CN"
+    "cca2": "CN",
+    "currencies": { "CNY": { "name": "Chinese yuan", "symbol": "¥" } }
   },
   {
     "name": { "common": "India" },
     "capital": ["New Delhi"],
     "flags": { "png": "https://flagcdn.com/w320/in.png" },
-    "cca2": "IN"
+    "cca2": "IN",
+    "currencies": { "INR": { "name": "Indian rupee", "symbol": "₹" } }
   },
   {
     "name": { "common": "South Korea" },
     "capital": ["Seoul"],
     "flags": { "png": "https://flagcdn.com/w320/kr.png" },
-    "cca2": "KR"
+    "cca2": "KR",
+    "currencies": { "KRW": { "name": "South Korean won", "symbol": "₩" } }
   },
   {
     "name": { "common": "Australia" },
     "capital": ["Canberra"],
     "flags": { "png": "https://flagcdn.com/w320/au.png" },
-    "cca2": "AU"
+    "cca2": "AU",
+    "currencies": { "AUD": { "name": "Australian dollar", "symbol": "$" } }
   },
   {
     "name": { "common": "New Zealand" },
     "capital": ["Wellington"],
     "flags": { "png": "https://flagcdn.com/w320/nz.png" },
-    "cca2": "NZ"
+    "cca2": "NZ",
+    "currencies": { "NZD": { "name": "New Zealand dollar", "symbol": "$" } }
   },
   {
     "name": { "common": "South Africa" },
     "capital": ["Pretoria"],
     "flags": { "png": "https://flagcdn.com/w320/za.png" },
-    "cca2": "ZA"
+    "cca2": "ZA",
+    "currencies": { "ZAR": { "name": "South African rand", "symbol": "R" } }
   },
   {
     "name": { "common": "Egypt" },
     "capital": ["Cairo"],
     "flags": { "png": "https://flagcdn.com/w320/eg.png" },
-    "cca2": "EG"
+    "cca2": "EG",
+    "currencies": { "EGP": { "name": "Egyptian pound", "symbol": "£" } }
   },
   {
     "name": { "common": "Nigeria" },
     "capital": ["Abuja"],
     "flags": { "png": "https://flagcdn.com/w320/ng.png" },
-    "cca2": "NG"
+    "cca2": "NG",
+    "currencies": { "NGN": { "name": "Nigerian naira", "symbol": "₦" } }
   },
   {
     "name": { "common": "Kenya" },
     "capital": ["Nairobi"],
     "flags": { "png": "https://flagcdn.com/w320/ke.png" },
-    "cca2": "KE"
+    "cca2": "KE",
+    "currencies": { "KES": { "name": "Kenyan shilling", "symbol": "Sh" } }
   },
   {
     "name": { "common": "Norway" },
     "capital": ["Oslo"],
     "flags": { "png": "https://flagcdn.com/w320/no.png" },
-    "cca2": "NO"
+    "cca2": "NO",
+    "currencies": { "NOK": { "name": "Norwegian krone", "symbol": "kr" } }
   },
   {
     "name": { "common": "Sweden" },
     "capital": ["Stockholm"],
     "flags": { "png": "https://flagcdn.com/w320/se.png" },
-    "cca2": "SE"
+    "cca2": "SE",
+    "currencies": { "SEK": { "name": "Swedish krona", "symbol": "kr" } }
   },
   {
     "name": { "common": "Finland" },
     "capital": ["Helsinki"],
     "flags": { "png": "https://flagcdn.com/w320/fi.png" },
-    "cca2": "FI"
+    "cca2": "FI",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Portugal" },
     "capital": ["Lisbon"],
     "flags": { "png": "https://flagcdn.com/w320/pt.png" },
-    "cca2": "PT"
+    "cca2": "PT",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Greece" },
     "capital": ["Athens"],
     "flags": { "png": "https://flagcdn.com/w320/gr.png" },
-    "cca2": "GR"
+    "cca2": "GR",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Turkey" },
     "capital": ["Ankara"],
     "flags": { "png": "https://flagcdn.com/w320/tr.png" },
-    "cca2": "TR"
+    "cca2": "TR",
+    "currencies": { "TRY": { "name": "Turkish lira", "symbol": "₺" } }
   },
   {
     "name": { "common": "Thailand" },
     "capital": ["Bangkok"],
     "flags": { "png": "https://flagcdn.com/w320/th.png" },
-    "cca2": "TH"
+    "cca2": "TH",
+    "currencies": { "THB": { "name": "Thai baht", "symbol": "฿" } }
   },
   {
     "name": { "common": "Vietnam" },
     "capital": ["Hanoi"],
     "flags": { "png": "https://flagcdn.com/w320/vn.png" },
-    "cca2": "VN"
+    "cca2": "VN",
+    "currencies": { "VND": { "name": "Vietnamese đồng", "symbol": "₫" } }
   },
   {
     "name": { "common": "Indonesia" },
     "capital": ["Jakarta"],
     "flags": { "png": "https://flagcdn.com/w320/id.png" },
-    "cca2": "ID"
+    "cca2": "ID",
+    "currencies": { "IDR": { "name": "Indonesian rupiah", "symbol": "Rp" } }
   },
   {
     "name": { "common": "Philippines" },
     "capital": ["Manila"],
     "flags": { "png": "https://flagcdn.com/w320/ph.png" },
-    "cca2": "PH"
+    "cca2": "PH",
+    "currencies": { "PHP": { "name": "Philippine peso", "symbol": "₱" } }
   },
   {
     "name": { "common": "Malaysia" },
     "capital": ["Kuala Lumpur"],
     "flags": { "png": "https://flagcdn.com/w320/my.png" },
-    "cca2": "MY"
+    "cca2": "MY",
+    "currencies": { "MYR": { "name": "Malaysian ringgit", "symbol": "RM" } }
   },
   {
     "name": { "common": "Chile" },
     "capital": ["Santiago"],
     "flags": { "png": "https://flagcdn.com/w320/cl.png" },
-    "cca2": "CL"
+    "cca2": "CL",
+    "currencies": { "CLP": { "name": "Chilean peso", "symbol": "$" } }
   },
   {
     "name": { "common": "Colombia" },
     "capital": ["Bogotá"],
     "flags": { "png": "https://flagcdn.com/w320/co.png" },
-    "cca2": "CO"
+    "cca2": "CO",
+    "currencies": { "COP": { "name": "Colombian peso", "symbol": "$" } }
   },
   {
     "name": { "common": "Peru" },
     "capital": ["Lima"],
     "flags": { "png": "https://flagcdn.com/w320/pe.png" },
-    "cca2": "PE"
+    "cca2": "PE",
+    "currencies": { "PEN": { "name": "Peruvian sol", "symbol": "S/" } }
   },
   {
     "name": { "common": "Netherlands" },
     "capital": ["Amsterdam"],
     "flags": { "png": "https://flagcdn.com/w320/nl.png" },
-    "cca2": "NL"
+    "cca2": "NL",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Belgium" },
     "capital": ["Brussels"],
     "flags": { "png": "https://flagcdn.com/w320/be.png" },
-    "cca2": "BE"
+    "cca2": "BE",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Switzerland" },
     "capital": ["Bern"],
     "flags": { "png": "https://flagcdn.com/w320/ch.png" },
-    "cca2": "CH"
+    "cca2": "CH",
+    "currencies": { "CHF": { "name": "Swiss franc", "symbol": "Fr." } }
   },
   {
     "name": { "common": "Austria" },
     "capital": ["Vienna"],
     "flags": { "png": "https://flagcdn.com/w320/at.png" },
-    "cca2": "AT"
+    "cca2": "AT",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Ireland" },
     "capital": ["Dublin"],
     "flags": { "png": "https://flagcdn.com/w320/ie.png" },
-    "cca2": "IE"
+    "cca2": "IE",
+    "currencies": { "EUR": { "name": "Euro", "symbol": "€" } }
   },
   {
     "name": { "common": "Czechia" },
     "capital": ["Prague"],
     "flags": { "png": "https://flagcdn.com/w320/cz.png" },
-    "cca2": "CZ"
+    "cca2": "CZ",
+    "currencies": { "CZK": { "name": "Czech koruna", "symbol": "Kč" } }
   }
 ]

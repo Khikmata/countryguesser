@@ -12,9 +12,7 @@ defineEmits<{
 
 <template>
   <div class="fixed bottom-0 left-0 right-0 z-30">
-    <div
-      class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3"
-    >
+    <div class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3">
       <button
         type="button"
         class="hidden items-center justify-center rounded-full border border-violet-300/70 bg-violet-100/95 px-4 py-2 text-xs font-bold uppercase tracking-wide text-violet-900 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
@@ -27,28 +25,22 @@ defineEmits<{
       <div
         class="pointer-events-auto flex max-w-lg flex-wrap items-center justify-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-neutral-900/90"
       >
-        <div
-          class="flex items-center gap-2 rounded-full bg-amber-400/20 px-4 py-2 text-sm font-semibold text-amber-900 dark:bg-amber-400/15 dark:text-amber-100"
-        >
-          <span class="opacity-70">Streak</span>
+        <UBadge color="warning" variant="subtle" size="lg" class="tabular-nums">
+          <span class="opacity-80">Streak</span>
           <Transition mode="out-in" name="pop-num">
-            <span :key="streak" class="tabular-nums">{{ streak }}</span>
+            <span :key="streak" class="ml-1 font-bold">{{ streak }}</span>
           </Transition>
-        </div>
-        <div
-          class="flex items-center gap-2 rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-900 dark:text-violet-100"
-        >
-          <span class="opacity-70">Best</span>
-          <span class="tabular-nums">{{ bestStreak }}</span>
-        </div>
-        <div
-          class="flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-900 dark:text-emerald-100"
-        >
-          <span class="opacity-70">Score</span>
+        </UBadge>
+        <UBadge color="secondary" variant="subtle" size="lg" class="tabular-nums">
+          <span class="opacity-80">Best</span>
+          <span class="ml-1 font-bold">{{ bestStreak }}</span>
+        </UBadge>
+        <UBadge color="success" variant="subtle" size="lg" class="tabular-nums">
+          <span class="opacity-80">Score</span>
           <Transition mode="out-in" name="pop-num">
-            <span :key="score" class="tabular-nums">{{ score }}</span>
+            <span :key="score" class="ml-1 font-bold">{{ score }}</span>
           </Transition>
-        </div>
+        </UBadge>
       </div>
     </div>
   </div>

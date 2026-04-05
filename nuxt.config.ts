@@ -1,20 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
-  modules: [
-    "@nuxt/ui",
-    "@nuxt/image",
-    "@vueuse/nuxt",
-    "@nuxt/a11y",
-    "@nuxt/eslint",
-  ],
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
+  },
+  modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxt/a11y", "@nuxt/eslint"],
   colorMode: {
     preference: "system",
   },
   app: {
     head: {
-      title: "Guess the Flag",
+      title: "Countryguesser",
       htmlAttrs: { lang: "en" },
       link: [
         { rel: "preconnect", href: "https://fonts.bunny.net" },
@@ -28,6 +28,12 @@ export default defineNuxtConfig({
           name: "viewport",
           content: "width=device-width, initial-scale=1, viewport-fit=cover",
         },
+        {
+          name: "description",
+          content:
+            "Guess countries from flags — a fast, free geography quiz with One life and Marathon modes, capitals bonus, and local leaderboards.",
+        },
+        { name: "theme-color", content: "#f0f9ff" },
       ],
     },
   },

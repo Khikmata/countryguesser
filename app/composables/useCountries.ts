@@ -31,13 +31,10 @@ function writeLocalCache(list: Country[]) {
 export function useCountries() {
   const list = useState<Country[]>("countries-list", () => []);
 
-  const { data, status, error, refresh } = useFetch<unknown[]>(
-    "/api/countries",
-    {
-      key: "countries-api",
-      default: () => [],
-    },
-  );
+  const { data, status, error, refresh } = useFetch<unknown[]>("/api/countries", {
+    key: "countries-api",
+    default: () => [],
+  });
 
   const ready = computed(() => list.value.length > 0);
 

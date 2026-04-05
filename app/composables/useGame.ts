@@ -1,14 +1,9 @@
 import type { DeckCompleteSnapshot, GameModeId } from "~/types/game";
 import type { Country } from "~/types/quiz";
-import { maskCountryNameHint, normalizeAnswer } from "~/utils/text";
+import { letterCountHint, maskPartialReveal, normalizeAnswer } from "~/utils/text";
 import { useCountries } from "./useCountries";
 
-export type GameState =
-  | "guessing"
-  | "bonus"
-  | "wrong_pending"
-  | "failed"
-  | "completed";
+export type GameState = "guessing" | "bonus" | "wrong_pending" | "failed" | "completed";
 
 const FAIL_OVERLAY_DELAY_MS = 800;
 
@@ -36,8 +31,8 @@ const CHEERS = [
 
 const DECK_COMPLETE_CHEERS = [
   "You named every flag in the set — incredible focus.",
-  "Full deck cleared. That is serious geography brain.",
-  "All flags down. You should be proud of that run.",
+  "Full clear. Impressive.",
+  "You should be proud of yourself",
   "Complete sweep — not many players get here.",
   "World tour finished. What a run!",
   "Every country in the pool: done. Outstanding.",
@@ -51,7 +46,7 @@ function speedMultiplier(elapsedMs: number, fullSlowMs: number): number {
 }
 
 export function useGame() {
-  const { countries, ready } = useCountries();
+  const { countries, ready, status } = useCountries();
   const { recordScore, tryRecordMarathonBest } = useLeaderboard();
 
   const currentCountry = shallowRef<Country | null>(null);
@@ -91,10 +86,7 @@ export function useGame() {
   /** Shown after a correct capital guess; speed-based bonus points only (streak is unchanged). */
   const capitalSpeedBonusPts = ref<number | null>(null);
 
-  const playSessionActive = useState<boolean>(
-    "gf-play-session-active",
-    () => false,
-  );
+  const playSessionActive = useState<boolean>("gf-play-session-active", () => false);
 
   /** Country ids already drawn this run — no repeats until the deck is finished or the session resets. */
   const sessionUsedCountryIds = ref<string[]>([]);
@@ -102,9 +94,7 @@ export function useGame() {
   const marathonCorrectFlags = ref(0);
   const marathonWrongs = ref(0);
   const marathonSkips = ref(0);
-  const marathonMissedLog = ref<{ name: string; kind: "wrong" | "skipped" }[]>(
-    [],
-  );
+  const marathonMissedLog = ref<{ name: string; kind: "wrong" | "skipped" }[]>([]);
   const deckCompleteSnapshot = ref<DeckCompleteSnapshot | null>(null);
 
   const failSnapshot = ref<{
@@ -123,13 +113,8 @@ export function useGame() {
     score.value = Number(localStorage.getItem(LS_SCORE) ?? "0") || 0;
     const rawHints = localStorage.getItem(LS_HINTS_BANK);
     hintsBank.value =
-      rawHints === null || rawHints === ""
-        ? 3
-        : Math.min(3, Math.max(0, Number(rawHints) || 0));
-    roundsFinished.value = Math.max(
-      0,
-      Number(localStorage.getItem(LS_ROUNDS_DONE) ?? "0") || 0,
-    );
+      rawHints === null || rawHints === "" ? 3 : Math.min(3, Math.max(0, Number(rawHints) || 0));
+    roundsFinished.value = Math.max(0, Number(localStorage.getItem(LS_ROUNDS_DONE) ?? "0") || 0);
     const rm = localStorage.getItem(LS_GAME_MODE);
     if (rm === "one-life" || rm === "marathon") gameMode.value = rm;
   }
@@ -166,15 +151,13 @@ export function useGame() {
   });
 
   function randomCheer() {
-    microcopy.value =
-      CHEERS[Math.floor(Math.random() * CHEERS.length)] ?? "Nice!";
+    microcopy.value = CHEERS[Math.floor(Math.random() * CHEERS.length)] ?? "Nice!";
   }
 
   function pickDeckCompleteEncouragement() {
     return (
-      DECK_COMPLETE_CHEERS[
-        Math.floor(Math.random() * DECK_COMPLETE_CHEERS.length)
-      ] ?? DECK_COMPLETE_CHEERS[0]!
+      DECK_COMPLETE_CHEERS[Math.floor(Math.random() * DECK_COMPLETE_CHEERS.length)] ??
+      DECK_COMPLETE_CHEERS[0]!
     );
   }
 
@@ -275,10 +258,7 @@ export function useGame() {
   }
 
   const canChangeGameMode = computed(
-    () =>
-      gameState.value === "guessing" &&
-      !marathonCooldown.value &&
-      !bonusAdvancing.value,
+    () => gameState.value === "guessing" && !marathonCooldown.value && !bonusAdvancing.value,
   );
 
   async function enterDeckCompleteState() {
@@ -399,13 +379,15 @@ export function useGame() {
   const hintDisplay = computed(() => {
     const c = currentCountry.value;
     if (!c || flagHintStage.value === 0) return "";
-    return maskCountryNameHint(c.name, flagHintStage.value === 1 ? 1 : 2);
+    if (flagHintStage.value === 1) return letterCountHint(c.name);
+    return maskPartialReveal(c.name);
   });
 
   const capitalHintDisplay = computed(() => {
     const c = currentCountry.value;
     if (!c || capitalHintStage.value === 0) return "";
-    return maskCountryNameHint(c.capital, capitalHintStage.value === 1 ? 1 : 2);
+    if (capitalHintStage.value === 1) return letterCountHint(c.capital);
+    return maskPartialReveal(c.capital);
   });
 
   const flagHintsDisabled = computed(
@@ -504,17 +486,11 @@ export function useGame() {
   }
 
   function submitFlag() {
-    if (
-      gameState.value !== "guessing" ||
-      !currentCountry.value ||
-      marathonCooldown.value
-    )
-      return;
+    if (gameState.value !== "guessing" || !currentCountry.value || marathonCooldown.value) return;
     if (!countryMatches(guess.value)) {
       const c = currentCountry.value;
       const guessed = flagsGuessedThisRun.value;
-      const { inputPx, screenPx, durationMs } =
-        shakeStrengthFromGuesses(guessed);
+      const { inputPx, screenPx, durationMs } = shakeStrengthFromGuesses(guessed);
 
       wrongShakeAmplitudePx.value = inputPx;
       wrongShakeDurationMs.value = durationMs;
@@ -595,12 +571,7 @@ export function useGame() {
   }
 
   async function finishBonusRound() {
-    if (
-      gameState.value !== "bonus" ||
-      !currentCountry.value ||
-      bonusAdvancing.value
-    )
-      return;
+    if (gameState.value !== "bonus" || !currentCountry.value || bonusAdvancing.value) return;
     bonusAdvancing.value = true;
     try {
       const trimmed = capitalGuess.value.trim();
@@ -693,6 +664,7 @@ export function useGame() {
   return {
     countries,
     ready,
+    status,
     currentCountry,
     guess,
     capitalGuess,
