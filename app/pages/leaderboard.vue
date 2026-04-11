@@ -55,8 +55,8 @@ const columns: TableColumn<LeaderboardRow, any>[] = [
       // Assign color classes for top 3 ranks
       const rankColors: Record<number, string> = {
         1: "text-amber-400",
-        2: "text-amber-200",
-        3: "text-orange-50",
+        2: "text-emerald-400",
+        3: "text-violet-400",
       };
 
       const className = rankColors[rank] ?? "text-neutral-400";

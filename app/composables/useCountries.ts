@@ -42,7 +42,6 @@ export function useCountries() {
     const out: Country[] = [];
     for (const el of raw) {
       const cleanedCountry = mapRestCountry(el as Parameters<typeof mapRestCountry>[0]);
-      console.log("cleanedCountry", cleanedCountry, el);
       if (cleanedCountry) out.push(cleanedCountry);
     }
     return out;
@@ -55,7 +54,6 @@ export function useCountries() {
       const next = normalize(raw);
       list.value = next;
       writeLocalCache(next);
-      console.log("list", list.value, raw);
     },
     { immediate: true },
   );

@@ -15,7 +15,7 @@ defineEmits<{
     <div class="flex flex-col items-center justify-center gap-2 px-4 pb-safe pt-3">
       <button
         type="button"
-        class="hidden items-center justify-center rounded-full bg-neutral-600/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-neutral-100 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-violet-950/75 dark:text-violet-100 dark:hover:bg-violet-900/80"
+        class="hidden items-center justify-center rounded-full bg-neutral-600/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-neutral-100 shadow-md backdrop-blur-sm transition hover:bg-violet-200/95 active:scale-[0.98] md:inline-flex dark:border-violet-500/35 dark:bg-neutral-700 dark:text-violet-100 dark:hover:bg-neutral-600/80"
         @click="$emit('leaderboards')"
       >
         Go to leaderboards

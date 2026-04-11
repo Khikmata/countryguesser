@@ -30,10 +30,8 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    console.log("fetch");
     const countries = await getCountries(event);
     memory = { t: now, data: countries };
-    console.log(countries);
     return countries;
   } catch (e) {
     const reason = remoteErrorReason(e);
