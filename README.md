@@ -19,13 +19,13 @@ Start the development server on `http://localhost:3000` by running:
 npm run dev
 ```
 
-#### IF YOU ARE HAVING PROBLEMS WITH COUNTRY FETCHING, CHANGE THE RUNTIME CONFIG IN:
+#### IF YOU ARE HAVING PROBLEMS WITH COUNTRY FETCHING, CHANGE countriesUseRemote from true to false:
 
 ```ts
 // nuxt.config.ts
 
   runtimeConfig: {
-    countriesUseRemote: true,
+    countriesUseRemote: false,
   },
 ```
 
