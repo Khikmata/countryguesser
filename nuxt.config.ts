@@ -53,6 +53,6 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
   // Server-only: set NUXT_COUNTRIES_USE_REMOTE=false if restcountries.com is unreachable (VPN/firewall).
   runtimeConfig: {
-    countriesUseRemote: false,
+    countriesUseRemote: true,
   },
 });

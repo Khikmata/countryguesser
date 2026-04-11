@@ -11,4 +11,10 @@ export interface Country {
   area: number;
   languages: string[];
   currencies: string[];
+  code?: string;
+  currency?: string;
+  currencyCode?: string; // e.g., "USD"
+  lat?: number;
+  lng?: number;
+  timezone?: string; // e.g., "UTC+1"
 }

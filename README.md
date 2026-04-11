@@ -1,4 +1,4 @@
-# Nuxt Minimal Starter
+# Nuxt country guesser
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
@@ -7,69 +7,31 @@ Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduct
 Make sure to install dependencies:
 
 ```bash
-# npm
+git clone https://github.com/Khikmata/countryguesser countryguesser
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Run locally
 
-Start the development server on `http://localhost:3000`:
+Start the development server on `http://localhost:3000` by running:
 
 ```bash
-# npm
 npm run dev
+```
 
-# pnpm
-pnpm dev
+#### IF YOU ARE HAVING PROBLEMS WITH COUNTRY FETCHING, CHANGE THE RUNTIME CONFIG IN:
 
-# yarn
-yarn dev
+```ts
+// nuxt.config.ts
 
-# bun
-bun run dev
+  runtimeConfig: {
+    countriesUseRemote: true,
+  },
 ```
 
 ## Production
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Production is on a vercel hosting on a link below
+<a>
+https://countryguesser-olive.vercel.app/
+</a>

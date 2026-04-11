@@ -9,13 +9,12 @@ interface RestCountry {
 
 export function mapRestCountry(raw: RestCountry): Country | null {
   const name = raw.name?.common;
-  const id = raw.cca2;
   const cap = raw.capital?.[0];
   const png = raw.flags?.png;
-  if (!name || !id || !cap || !png) return null;
+  if (!name || !cap || !png) return null;
 
   return {
-    id,
+    id: name,
     name,
     capital: cap,
     continent: "",
