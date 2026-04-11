@@ -1,6 +1,6 @@
 # Nuxt country guesser
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+made by using default nuxt ecosystem libraries and https://restcountries.com/ API
 
 ## Setup
 
@@ -8,6 +8,7 @@ Make sure to install dependencies:
 
 ```bash
 git clone https://github.com/Khikmata/countryguesser countryguesser
+cd countryguesser
 npm install
 ```
 
@@ -22,7 +23,7 @@ npm run dev
 #### IF YOU ARE HAVING PROBLEMS WITH COUNTRY FETCHING, CHANGE countriesUseRemote from true to false:
 
 ```ts
-// nuxt.config.ts
+  // nuxt.config.ts
 
   runtimeConfig: {
     countriesUseRemote: false,
